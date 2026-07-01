@@ -53,7 +53,7 @@ export default function FAQ({ faqs, setView, settings }: FaqProps) {
     <div className="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300">
       
       {/* 1. HERO HEADER */}
-      <section className="relative py-28 bg-slate-900 text-white border-b border-slate-800 text-center overflow-hidden">
+      <section className="relative py-24 bg-slate-900 text-white border-b border-slate-800 text-center overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center opacity-25 pointer-events-none"
           style={{ backgroundImage: `url(${bannerImg})` }}
