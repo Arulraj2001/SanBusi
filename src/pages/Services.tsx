@@ -17,6 +17,15 @@ function RenderIcon({ name, className }: { name: string; className: string }) {
 export default function Services({ services, setView }: ServicesProps) {
   const [expandedKey, setExpandedKey] = useState<string | null>(null);
 
+  // Timeline process definition
+  const engineeringSteps = [
+    { num: '01', title: 'Discovery', desc: 'Scoping requirements, analyzing architecture, and outlining baseline key performance indicators.' },
+    { num: '02', title: 'Architecture', desc: 'Designing database schemas, network topologies, API endpoints, and security guardrails.' },
+    { num: '03', title: 'Development', desc: 'Writing clean, modular, and typed components in weekly sprints with continuous code reviews.' },
+    { num: '04', title: 'Testing', desc: 'Executing robust unit tests, load tolerances, security compliance audits, and staging checks.' },
+    { num: '05', title: 'Deployment', desc: 'Releasing to production cloud runtimes with automatic scaling and real-time monitoring alerts.' }
+  ];
+
   const toggleExpand = (id: string) => {
     setExpandedKey(expandedKey === id ? null : id);
   };
