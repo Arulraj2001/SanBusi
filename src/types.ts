@@ -102,6 +102,14 @@ export interface WebsiteSettings {
   aboutStats?: Array<{ value: string; label: string }>;
   aboutCoreValues?: Array<{ title: string; text: string; icon?: string }>;
   aboutTeamMembers?: Array<{ name: string; role: string; bio: string; image: string }>;
+  homeVideoUrl?: string;
+  servicesBannerUrl?: string;
+  portfolioBannerUrl?: string;
+  blogBannerUrl?: string;
+  careersBannerUrl?: string;
+  faqBannerUrl?: string;
+  contactBannerUrl?: string;
+  aboutBannerUrl?: string;
 }
 
 export interface Admin {

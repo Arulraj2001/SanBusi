@@ -166,6 +166,14 @@ export default function AdminDashboard({
   const [setInLinkedIn, setSetInLinkedIn] = useState('');
   const [setInGithub, setSetInGithub] = useState('');
   const [setInTwitter, setSetInTwitter] = useState('');
+  const [setHomeVideo, setSetHomeVideo] = useState('');
+  const [setSrvBanner, setSetSrvBanner] = useState('');
+  const [setPortBanner, setSetPortBanner] = useState('');
+  const [setBlgBanner, setSetBlgBanner] = useState('');
+  const [setCarBanner, setSetCarBanner] = useState('');
+  const [setFaqBanner, setSetFaqBanner] = useState('');
+  const [setCntBanner, setSetCntBanner] = useState('');
+  const [setAbtBanner, setSetAbtBanner] = useState('');
 
   // 8. Local Bypass Passcode state
   const [oldPasscode, setOldPasscode] = useState('');
@@ -200,6 +208,14 @@ export default function AdminDashboard({
       setSetInLinkedIn(settings.socialLinks?.linkedin || '');
       setSetInGithub(settings.socialLinks?.github || '');
       setSetInTwitter(settings.socialLinks?.twitter || '');
+      setSetHomeVideo(settings.homeVideoUrl || '');
+      setSetSrvBanner(settings.servicesBannerUrl || '');
+      setSetPortBanner(settings.portfolioBannerUrl || '');
+      setSetBlgBanner(settings.blogBannerUrl || '');
+      setSetCarBanner(settings.careersBannerUrl || '');
+      setSetFaqBanner(settings.faqBannerUrl || '');
+      setSetCntBanner(settings.contactBannerUrl || '');
+      setSetAbtBanner(settings.aboutBannerUrl || '');
 
       // Hydrate About settings
       setAboutSub(settings.aboutHeroSubtitle || 'Our Origin Story');
@@ -1132,6 +1148,14 @@ export default function AdminDashboard({
         github: setInGithub.trim() || "",
         twitter: setInTwitter.trim() || ""
       },
+      homeVideoUrl: setHomeVideo.trim(),
+      servicesBannerUrl: setSrvBanner.trim(),
+      portfolioBannerUrl: setPortBanner.trim(),
+      blogBannerUrl: setBlgBanner.trim(),
+      careersBannerUrl: setCarBanner.trim(),
+      faqBannerUrl: setFaqBanner.trim(),
+      contactBannerUrl: setCntBanner.trim(),
+      aboutBannerUrl: setAbtBanner.trim(),
       // About Page parameters
       aboutHeroSubtitle: aboutSub.trim(),
       aboutHeroTitle: aboutH1.trim(),
@@ -2824,6 +2848,100 @@ export default function AdminDashboard({
                       value={teamJson}
                       onChange={(e) => setTeamJson(e.target.value)}
                       className="py-3 px-4 rounded-xl text-[11px] font-mono bg-slate-950 text-emerald-400 dark:bg-slate-950/40 border border-slate-200 dark:border-slate-800 outline-none focus:border-indigo-500 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div className="h-px bg-slate-100 dark:bg-slate-850 my-2" />
+
+                <h4 className="text-sm font-bold uppercase tracking-wider text-slate-400">Home Video & Sub-page Header Banners</h4>
+
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Homepage Background Hero Video URL (MP4)</label>
+                  <input
+                    type="text"
+                    value={setHomeVideo}
+                    onChange={(e) => setSetHomeVideo(e.target.value)}
+                    placeholder="https://assets.mixkit.co/videos/preview/..."
+                    className="py-3 px-4 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 transition-colors"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Services Header Banner URL</label>
+                    <input
+                      type="text"
+                      value={setSrvBanner}
+                      onChange={(e) => setSetSrvBanner(e.target.value)}
+                      placeholder="https://images.unsplash.com/photo-..."
+                      className="py-3 px-4 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 transition-colors"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Portfolio Header Banner URL</label>
+                    <input
+                      type="text"
+                      value={setPortBanner}
+                      onChange={(e) => setSetPortBanner(e.target.value)}
+                      placeholder="https://images.unsplash.com/photo-..."
+                      className="py-3 px-4 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Blog Header Banner URL</label>
+                    <input
+                      type="text"
+                      value={setBlgBanner}
+                      onChange={(e) => setSetBlgBanner(e.target.value)}
+                      placeholder="https://images.unsplash.com/photo-..."
+                      className="py-3 px-4 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 transition-colors"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Careers Header Banner URL</label>
+                    <input
+                      type="text"
+                      value={setCarBanner}
+                      onChange={(e) => setSetCarBanner(e.target.value)}
+                      placeholder="https://images.unsplash.com/photo-..."
+                      className="py-3 px-4 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">FAQ Banner URL</label>
+                    <input
+                      type="text"
+                      value={setFaqBanner}
+                      onChange={(e) => setSetFaqBanner(e.target.value)}
+                      placeholder="https://images.unsplash.com/photo-..."
+                      className="py-3 px-4 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 transition-colors"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Contact Banner URL</label>
+                    <input
+                      type="text"
+                      value={setCntBanner}
+                      onChange={(e) => setSetCntBanner(e.target.value)}
+                      placeholder="https://images.unsplash.com/photo-..."
+                      className="py-3 px-4 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 transition-colors"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">About Banner URL</label>
+                    <input
+                      type="text"
+                      value={setAbtBanner}
+                      onChange={(e) => setSetAbtBanner(e.target.value)}
+                      placeholder="https://images.unsplash.com/photo-..."
+                      className="py-3 px-4 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 transition-colors"
                     />
                   </div>
                 </div>

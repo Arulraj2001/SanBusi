@@ -1,6 +1,6 @@
 import { ArrowRight, Star, Code2, Users, Shield, Zap, Cloud, Sparkles, ShoppingCart, BarChart2, ShieldCheck, Smile, Trophy, Headphones, Lock, Atom, Flame, Wind, HelpCircle, ChevronRight } from 'lucide-react';
 import * as Icons from 'lucide-react';
-import { Service, PortfolioProject, Testimonial } from '../types';
+import { Service, PortfolioProject, Testimonial, WebsiteSettings } from '../types';
 import { motion } from 'motion/react';
 
 interface HomeProps {
@@ -9,6 +9,7 @@ interface HomeProps {
   testimonials: Testimonial[];
   setView: (view: string) => void;
   setSelectedProject: (project: PortfolioProject) => void;
+  settings: WebsiteSettings;
 }
 
 // Helper to render Lucide Icons by name dynamically
@@ -20,7 +21,7 @@ export function RenderIcon({ name, className = "h-6 w-6 text-indigo-600 dark:tex
   return <IconComponent className={className} />;
 }
 
-export default function Home({ services, portfolios, testimonials, setView, setSelectedProject }: HomeProps) {
+export default function Home({ services, portfolios, testimonials, setView, setSelectedProject, settings }: HomeProps) {
   const highlightPortfolios = portfolios.slice(0, 3);
 
   const showTwoRows = testimonials.length > 2;
@@ -129,6 +130,19 @@ export default function Home({ services, portfolios, testimonials, setView, setS
       {/* 1. HERO SECTION */}
       <section className="relative overflow-hidden py-24 lg:py-32 bg-white dark:bg-slate-950 border-b border-slate-150 dark:border-slate-900 flex items-center min-h-[85vh]">
         
+        {/* Background video loop with low opacity */}
+        {settings?.homeVideoUrl && (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-[0.08] dark:opacity-[0.16] pointer-events-none z-0"
+          >
+            <source src={settings.homeVideoUrl} type="video/mp4" />
+          </video>
+        )}
+
         {/* Subtle moving background glow */}
         <motion.div
           animate={{
@@ -140,7 +154,7 @@ export default function Home({ services, portfolios, testimonials, setView, setS
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(99,102,241,0.04),transparent_50%)] pointer-events-none"
+          className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(99,102,241,0.04),transparent_50%)] pointer-events-none z-0"
         />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative w-full z-10">

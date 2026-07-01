@@ -481,26 +481,28 @@ function AppContent() {
               setSelectedProject(proj);
               setCurrentPath('#portfolio');
             }}
+            settings={settings}
           />
         );
       case '#about':
         return <About settings={settings} />;
       case '#services':
-        return <Services services={services} setView={setCurrentView} />;
+        return <Services services={services} setView={setCurrentView} settings={settings} />;
       case '#portfolio':
         return (
           <Portfolio
             portfolios={portfolios}
             selectedProject={selectedProject}
             setSelectedProject={setSelectedProject}
+            settings={settings}
           />
         );
       case '#blog':
-        return <Blog blogs={blogs} />;
+        return <Blog blogs={blogs} settings={settings} />;
       case '#faq':
-        return <FAQ faqs={faqs} setView={setCurrentView} />;
+        return <FAQ faqs={faqs} setView={setCurrentView} settings={settings} />;
       case '#careers':
-        return <Careers careers={careers} addToast={addToast} />;
+        return <Careers careers={careers} addToast={addToast} settings={settings} />;
       case '#contact':
         return <Contact services={services} settings={settings} addToast={addToast} />;
       

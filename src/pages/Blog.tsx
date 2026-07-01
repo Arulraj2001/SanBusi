@@ -1,14 +1,15 @@
 import { useState, useMemo } from 'react';
-import { BlogPost } from '../types';
+import { BlogPost, WebsiteSettings } from '../types';
 import { Search, Calendar, User, ArrowLeft, Clock, Tag } from 'lucide-react';
 import Markdown from 'react-markdown';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface BlogProps {
   blogs: BlogPost[];
+  settings?: WebsiteSettings;
 }
 
-export default function Blog({ blogs }: BlogProps) {
+export default function Blog({ blogs, settings }: BlogProps) {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [activeArticle, setActiveArticle] = useState<BlogPost | null>(null);
@@ -71,13 +72,23 @@ export default function Blog({ blogs }: BlogProps) {
             exit={{ opacity: 0 }}
           >
             {/* HER0 HEADER */}
-            <section className="py-20 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-900 text-center">
-              <div className="max-w-4xl mx-auto px-4">
-                <span className="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Knowledge Lab</span>
-                <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white mt-4 tracking-tight">
-                  Corporate Corporate Insights
+            <section className="relative py-24 bg-slate-900 text-white border-b border-slate-800 text-center overflow-hidden">
+              {settings?.blogBannerUrl ? (
+                <div 
+                  className="absolute inset-0 bg-cover bg-center opacity-25 pointer-events-none"
+                  style={{ backgroundImage: `url(${settings.blogBannerUrl})` }}
+                />
+              ) : (
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(99,102,241,0.05),transparent)] pointer-events-none" />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent pointer-events-none" />
+
+              <div className="max-w-4xl mx-auto px-4 relative z-10">
+                <span className="text-xs font-bold uppercase tracking-widest text-indigo-400 font-mono">Knowledge Lab</span>
+                <h1 className="text-4xl sm:text-5xl font-extrabold text-white mt-4 tracking-tight">
+                  Corporate Insights
                 </h1>
-                <p className="text-base text-slate-505 dark:text-slate-400 max-w-2xl mx-auto mt-6 leading-relaxed">
+                <p className="text-base text-slate-300 max-w-2xl mx-auto mt-6 leading-relaxed">
                   Deep-dives covering modern microservices compilation, AI semantic prompts, headless conversions, and database isolation rules.
                 </p>
               </div>

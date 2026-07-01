@@ -1,14 +1,15 @@
 import { useState, useMemo, useRef } from 'react';
-import { JobVacancy } from '../types';
+import { JobVacancy, WebsiteSettings } from '../types';
 import { Briefcase, MapPin, Clock, X, Check, FileText, ArrowRight, Sparkles, BookOpen, Globe, Cpu, Users, GraduationCap, ArrowUpRight, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface CareersProps {
   careers: JobVacancy[];
   addToast: (type: 'success' | 'error', msg: string) => void;
+  settings?: WebsiteSettings;
 }
 
-export default function Careers({ careers, addToast }: CareersProps) {
+export default function Careers({ careers, addToast, settings }: CareersProps) {
   const [selectedJob, setSelectedJob] = useState<JobVacancy | null>(null);
   const [isApplying, setIsApplying] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>('All');
@@ -38,8 +39,8 @@ export default function Careers({ careers, addToast }: CareersProps) {
     },
     {
       title: 'Continuous Learning',
-      desc: 'We support regular training cycles, GCP/AWS cloud architecture certifications, and deep R&D into AI models.',
-      icon: <GraduationCap className="h-6 w-6 text-indigo-500" />
+      desc: 'We incentivize continuous engineering progression through specialized library budgets, tech books, and stack conferences.',
+      icon: <BookOpen className="h-6 w-6 text-indigo-500" />
     }
   ];
 
@@ -50,33 +51,21 @@ export default function Careers({ careers, addToast }: CareersProps) {
     { title: 'Growth opportunities', desc: 'Advance along clear technical or management tracks with active mentorship and structural certification resources.' }
   ];
 
-  // Dynamic Tab filter logic mapping departments
+  // Filtered vacancies
   const filteredJobs = useMemo(() => {
-    return careers.filter((job) => {
-      if (activeTab === 'All') return true;
-      const dept = job.department.toLowerCase();
-      const tabVal = activeTab.toLowerCase();
-      
-      if (tabVal === 'engineering') {
-        return dept.includes('engineering') || dept.includes('developer') || dept.includes('coder') || dept.includes('technical');
-      } else if (tabVal === 'design') {
-        return dept.includes('design') || dept.includes('ux') || dept.includes('ui') || dept.includes('creative');
-      } else if (tabVal === 'marketing') {
-        return dept.includes('marketing') || dept.includes('sales') || dept.includes('growth');
-      } else if (tabVal === 'ai') {
-        return dept.includes('ai') || dept.includes('intelligence') || dept.includes('automation') || dept.includes('ml');
-      }
-      return dept.includes(tabVal);
-    });
+    if (activeTab === 'All') return careers;
+    return careers.filter(job => job.department === activeTab);
   }, [careers, activeTab]);
 
   const handleOpenApply = (job: JobVacancy) => {
     setSelectedJob(job);
     setIsApplying(true);
+    document.body.style.overflow = 'hidden';
   };
 
   const handleCloseApply = () => {
     setIsApplying(false);
+    document.body.style.overflow = '';
     setSelectedJob(null);
     setFormName('');
     setFormEmail('');
@@ -108,14 +97,23 @@ export default function Careers({ careers, addToast }: CareersProps) {
     <div className="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300">
       
       {/* 1. HERO HEADER */}
-      <section className="py-24 bg-white dark:bg-slate-900 border-b border-slate-150 dark:border-slate-850 text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(99,102,241,0.03),transparent)] pointer-events-none" />
+      <section className="relative py-28 bg-slate-900 text-white border-b border-slate-800 text-center overflow-hidden">
+        {settings?.careersBannerUrl ? (
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-25 pointer-events-none"
+            style={{ backgroundImage: `url(${settings.careersBannerUrl})` }}
+          />
+        ) : (
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(99,102,241,0.05),transparent)] pointer-events-none" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent pointer-events-none" />
+
         <div className="max-w-4xl mx-auto px-4 relative z-10">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 font-mono">Join Our Team</span>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white mt-4 tracking-tight leading-tight">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-400 font-mono">Join Our Team</span>
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-white mt-4 tracking-tight leading-tight">
             Join Nexus Digital
           </h1>
-          <p className="text-base text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mt-6 leading-relaxed">
+          <p className="text-base text-slate-300 max-w-2xl mx-auto mt-6 leading-relaxed">
             Build enterprise systems that scale globally
           </p>
         </div>

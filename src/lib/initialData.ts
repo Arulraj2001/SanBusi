@@ -406,5 +406,13 @@ export const INITIAL_SETTINGS: WebsiteSettings = {
   },
   seoTitle: "Nexus Digital Solutions Agency | Custom Software & SaaS Architecture",
   seoDescription: "An elite modern Digital solutions studio crafting resilient software, responsive single-page web experiences, native mobile engines, and automated workflow pathways.",
+  homeVideoUrl: "https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-screen-loop-34448-large.mp4",
+  servicesBannerUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+  portfolioBannerUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+  blogBannerUrl: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1200&q=80",
+  careersBannerUrl: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
+  faqBannerUrl: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80",
+  contactBannerUrl: "https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&fit=crop&w=1200&q=80",
+  aboutBannerUrl: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80",
   updatedAt: new Date()
 };

@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { PortfolioProject } from '../types';
+import { PortfolioProject, WebsiteSettings } from '../types';
 import { X, ExternalLink, Calendar, Briefcase, Tag } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -7,9 +7,10 @@ interface PortfolioProps {
   portfolios: PortfolioProject[];
   selectedProject: PortfolioProject | null;
   setSelectedProject: (project: PortfolioProject | null) => void;
+  settings?: WebsiteSettings;
 }
 
-export default function Portfolio({ portfolios, selectedProject, setSelectedProject }: PortfolioProps) {
+export default function Portfolio({ portfolios, selectedProject, setSelectedProject, settings }: PortfolioProps) {
   const [activeCategory, setActiveCategory] = useState<string>('All');
 
   // Categories list
@@ -28,13 +29,23 @@ export default function Portfolio({ portfolios, selectedProject, setSelectedProj
     <div className="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300">
       
       {/* 1. HERO HEADER */}
-      <section className="py-20 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-900 text-center">
-        <div className="max-w-4xl mx-auto px-4">
-          <span className="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Our Works</span>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white mt-4 tracking-tight">
+      <section className="relative py-24 bg-slate-900 text-white border-b border-slate-800 text-center overflow-hidden">
+        {settings?.portfolioBannerUrl ? (
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-25 pointer-events-none"
+            style={{ backgroundImage: `url(${settings.portfolioBannerUrl})` }}
+          />
+        ) : (
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(99,102,241,0.05),transparent)] pointer-events-none" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent pointer-events-none" />
+
+        <div className="max-w-4xl mx-auto px-4 relative z-10">
+          <span className="text-xs font-bold uppercase tracking-widest text-indigo-400 font-mono">Our Works</span>
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-white mt-4 tracking-tight">
             Visual Case Studies
           </h1>
-          <p className="text-base text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mt-6 leading-relaxed">
+          <p className="text-base text-slate-350 max-w-2xl mx-auto mt-6 leading-relaxed">
             Take an in-depth visual tour across our compiled ledger apps, responsive headless retail environments, and automated administrative control suites.
           </p>
         </div>

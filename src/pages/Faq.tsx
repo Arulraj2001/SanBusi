@@ -1,14 +1,15 @@
 import { useState, useMemo } from 'react';
-import { Faq } from '../types';
+import { Faq, WebsiteSettings } from '../types';
 import { ChevronDown, ChevronUp, Search, HelpCircle, ArrowRight, MessageSquare, Mail } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface FaqProps {
   faqs: Faq[];
   setView: (view: string) => void;
+  settings?: WebsiteSettings;
 }
 
-export default function FAQ({ faqs, setView }: FaqProps) {
+export default function FAQ({ faqs, setView, settings }: FaqProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('General');
@@ -50,14 +51,23 @@ export default function FAQ({ faqs, setView }: FaqProps) {
     <div className="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300">
       
       {/* 1. HERO HEADER */}
-      <section className="py-24 bg-white dark:bg-slate-900 border-b border-slate-150 dark:border-slate-850 text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(99,102,241,0.03),transparent)] pointer-events-none" />
+      <section className="relative py-28 bg-slate-900 text-white border-b border-slate-800 text-center overflow-hidden">
+        {settings?.faqBannerUrl ? (
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-25 pointer-events-none"
+            style={{ backgroundImage: `url(${settings.faqBannerUrl})` }}
+          />
+        ) : (
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(99,102,241,0.05),transparent)] pointer-events-none" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent pointer-events-none" />
+
         <div className="max-w-4xl mx-auto px-4 relative z-10">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 font-mono">FAQ Directory</span>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white mt-4 tracking-tight leading-tight">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-400 font-mono">FAQ Directory</span>
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-white mt-4 tracking-tight leading-tight">
             Frequently Asked Questions
           </h1>
-          <p className="text-base text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mt-6 leading-relaxed">
+          <p className="text-base text-slate-300 max-w-2xl mx-auto mt-6 leading-relaxed">
             Everything you need to know about working with Nexus Digital
           </p>
         </div>
