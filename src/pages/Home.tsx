@@ -244,24 +244,7 @@ export default function Home({ services, portfolios, testimonials, setView, setS
                 </motion.button>
               </motion.div>
 
-              {/* Social Proof */}
-              <motion.div
-                variants={fadeInUp}
-                className="flex items-center gap-4 mt-4"
-              >
-                <div className="flex -space-x-3 overflow-hidden">
-                  <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white dark:ring-slate-950 object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&h=100&q=80" alt="Client 1" />
-                  <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white dark:ring-slate-950 object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&h=100&q=80" alt="Client 2" />
-                  <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white dark:ring-slate-950 object-cover" src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=100&h=100&q=80" alt="Client 3" />
-                  <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white dark:ring-slate-950 object-cover" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&h=100&q=80" alt="Client 4" />
-                  <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-600 text-white font-bold text-xs ring-2 ring-white dark:ring-slate-950 select-none">
-                    40+
-                  </div>
-                </div>
-                <p className={`text-xs sm:text-sm ${ settings?.homeVideoUrl ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400' }`}>
-                  Trusted by <strong className={settings?.homeVideoUrl ? 'text-white' : 'text-slate-800 dark:text-slate-200'}>40+ businesses</strong> to deliver impact at scale.
-                </p>
-              </motion.div>
+
             </motion.div>
 
             {/* Hero Right Visual Column: Oscillating Dashboard Card */}
