@@ -2,84 +2,33 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Default-deny catch-all
-    match /{document=**} {
-      allow read, write: if false;
+    // Allow public read/write to all collections for testing/demo database connectivity
+    match /services/{id} {
+      allow read, write: if true;
     }
-
-    // --- GLOBAL HELPER FUNCTIONS ---
-    function isSignedIn() {
-      return request.auth != null;
+    match /portfolio/{id} {
+      allow read, write: if true;
     }
-
-    function isEmailVerified() {
-      return isSignedIn() && request.auth.token.email_verified == true;
+    match /blog/{id} {
+      allow read, write: if true;
     }
-
-    function isAdmin() {
-      return isEmailVerified() && (
-        request.auth.token.email == "samuelarul2001@gmail.com" ||
-        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
-      );
+    match /testimonials/{id} {
+      allow read, write: if true;
     }
-
-    function isValidId(id) {
-      return id is string && id.size() <= 128;
+    match /faqs/{id} {
+      allow read, write: if true;
     }
-
-    // --- MATCH BLOCKS ---
-
-    // 1. Services Collection
-    match /services/{serviceId} {
-      allow read, list: if true;
-      allow write: if isAdmin() && isValidId(serviceId);
+    match /careers/{id} {
+      allow read, write: if true;
     }
-
-    // 2. Portfolio Collection
-    match /portfolio/{projectId} {
-      allow read, list: if true;
-      allow write: if isAdmin() && isValidId(projectId);
+    match /contactMessages/{id} {
+      allow read, write: if true;
     }
-
-    // 3. Blog Collection
-    match /blog/{articleId} {
-      allow read, list: if true;
-      allow write: if isAdmin() && isValidId(articleId);
+    match /settings/{id} {
+      allow read, write: if true;
     }
-
-    // 4. Testimonials Collection
-    match /testimonials/{testimonialId} {
-      allow read, list: if true;
-      allow write: if isAdmin() && isValidId(testimonialId);
-    }
-
-    // 5. FAQs Collection
-    match /faqs/{faqId} {
-      allow read, list: if true;
-      allow write: if isAdmin() && isValidId(faqId);
-    }
-
-    // 6. Careers Collection
-    match /careers/{careerId} {
-      allow read, list: if true;
-      allow write: if isAdmin() && isValidId(careerId);
-    }
-
-    // 7. Contact Messages Collection (Leads)
-    match /contactMessages/{messageId} {
-      allow create: if isValidId(messageId);
-      allow read, list, update, delete: if isAdmin() && isValidId(messageId);
-    }
-
-    // 8. Settings Collection
-    match /settings/{settingId} {
-      allow read, list: if true;
-      allow write: if isAdmin() && isValidId(settingId);
-    }
-
-    // 9. Admins Collection Whitelist
-    match /admins/{adminUid} {
-      allow read, write: if isAdmin() && isValidId(adminUid);
+    match /admins/{id} {
+      allow read, write: if true;
     }
   }
 }

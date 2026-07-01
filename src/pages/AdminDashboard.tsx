@@ -294,7 +294,7 @@ export default function AdminDashboard({
     setSeeding(true);
     addToast('info', 'Executing transaction batch sets...');
 
-    const isBypass = localStorage.getItem('bypass_admin') === 'true';
+    const isBypass = false; // Forced live database synchronization mode
     if (isBypass) {
       localStorage.setItem('local_services', JSON.stringify(INITIAL_SERVICES));
       localStorage.setItem('local_portfolio', JSON.stringify(INITIAL_PORTFOLIOS));
@@ -415,7 +415,7 @@ export default function AdminDashboard({
       technologies: servTech.split(',').map(s => s.trim()).filter(Boolean)
     };
 
-    const isBypass = localStorage.getItem('bypass_admin') === 'true';
+    const isBypass = false; // Forced live database synchronization mode
 
     const saveLocally = async (message: string) => {
       const current = [...services];
@@ -474,7 +474,7 @@ export default function AdminDashboard({
 
   // Delete Service
   const deleteService = async (id: string) => {
-    const isBypass = localStorage.getItem('bypass_admin') === 'true';
+    const isBypass = false; // Forced live database synchronization mode
 
     const deleteLocally = async (message: string) => {
       const current = services.filter(x => x.id !== id);
@@ -519,7 +519,7 @@ export default function AdminDashboard({
       technologies: portTech.split(',').map(s => s.trim()).filter(Boolean)
     };
 
-    const isBypass = localStorage.getItem('bypass_admin') === 'true';
+    const isBypass = false; // Forced live database synchronization mode
 
     const saveLocally = async (message: string) => {
       const current = [...portfolios];
@@ -578,7 +578,7 @@ export default function AdminDashboard({
 
   // Delete Portfolio Project
   const deletePortfolio = async (id: string) => {
-    const isBypass = localStorage.getItem('bypass_admin') === 'true';
+    const isBypass = false; // Forced live database synchronization mode
 
     const deleteLocally = async (message: string) => {
       const current = portfolios.filter(x => x.id !== id);
@@ -623,7 +623,7 @@ export default function AdminDashboard({
       content: blogContent
     };
 
-    const isBypass = localStorage.getItem('bypass_admin') === 'true';
+    const isBypass = false; // Forced live database synchronization mode
 
     const saveLocally = async (message: string) => {
       const current = [...blogs];
@@ -683,7 +683,7 @@ export default function AdminDashboard({
 
   // Delete Blog
   const deleteBlog = async (id: string) => {
-    const isBypass = localStorage.getItem('bypass_admin') === 'true';
+    const isBypass = false; // Forced live database synchronization mode
 
     const deleteLocally = async (message: string) => {
       const current = blogs.filter(x => x.id !== id);
@@ -727,7 +727,7 @@ export default function AdminDashboard({
       avatar: testAvatar.trim()
     };
 
-    const isBypass = localStorage.getItem('bypass_admin') === 'true';
+    const isBypass = false; // Forced live database synchronization mode
 
     const saveLocally = async (message: string) => {
       const current = [...testimonials];
@@ -786,7 +786,7 @@ export default function AdminDashboard({
 
   // Delete Testimonial
   const deleteTestimonial = async (id: string) => {
-    const isBypass = localStorage.getItem('bypass_admin') === 'true';
+    const isBypass = false; // Forced live database synchronization mode
 
     const deleteLocally = async (message: string) => {
       const current = testimonials.filter(x => x.id !== id);
@@ -827,7 +827,7 @@ export default function AdminDashboard({
       category: faqCat
     };
 
-    const isBypass = localStorage.getItem('bypass_admin') === 'true';
+    const isBypass = false; // Forced live database synchronization mode
 
     const saveLocally = async (message: string) => {
       const current = [...faqs];
@@ -886,7 +886,7 @@ export default function AdminDashboard({
 
   // Delete FAQ
   const deleteFaq = async (id: string) => {
-    const isBypass = localStorage.getItem('bypass_admin') === 'true';
+    const isBypass = false; // Forced live database synchronization mode
 
     const deleteLocally = async (message: string) => {
       const current = faqs.filter(x => x.id !== id);
@@ -931,7 +931,7 @@ export default function AdminDashboard({
       benefits: carBens.split(',').map(s => s.trim()).filter(Boolean)
     };
 
-    const isBypass = localStorage.getItem('bypass_admin') === 'true';
+    const isBypass = false; // Forced live database synchronization mode
 
     const saveLocally = async (message: string) => {
       const current = [...careers];
@@ -990,7 +990,7 @@ export default function AdminDashboard({
 
   // Delete Career vacancy
   const deleteCareer = async (id: string) => {
-    const isBypass = localStorage.getItem('bypass_admin') === 'true';
+    const isBypass = false; // Forced live database synchronization mode
 
     const deleteLocally = async (message: string) => {
       const current = careers.filter(x => x.id !== id);
@@ -1021,7 +1021,7 @@ export default function AdminDashboard({
   const toggleMessageRead = async (id: string, currentStatus: string) => {
     const newStatus = currentStatus === 'unread' ? 'read' : 'unread';
 
-    const isBypass = localStorage.getItem('bypass_admin') === 'true';
+    const isBypass = false; // Forced live database synchronization mode
     if (isBypass) {
       const current = [...messages];
       const idx = current.findIndex(x => x.id === id);
@@ -1058,7 +1058,7 @@ export default function AdminDashboard({
 
   // Delete Message
   const deleteMessage = async (id: string) => {
-    const isBypass = localStorage.getItem('bypass_admin') === 'true';
+    const isBypass = false; // Forced live database synchronization mode
     if (isBypass) {
       const current = messages.filter(x => x.id !== id);
       localStorage.setItem('local_contactMessages', JSON.stringify(current));
@@ -1171,7 +1171,7 @@ export default function AdminDashboard({
       aboutTeamMembers: teamMembersParsed
     };
 
-    const isBypass = localStorage.getItem('bypass_admin') === 'true';
+    const isBypass = false; // Forced live database synchronization mode
 
     const saveLocally = async (message: string) => {
       const updated = {

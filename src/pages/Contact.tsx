@@ -45,7 +45,7 @@ export default function Contact({ services, settings, addToast }: ContactProps) 
 
     setSubmitting(true);
 
-    const isBypass = localStorage.getItem('bypass_admin') === 'true';
+    const isBypass = false; // Forced live database synchronization mode
     if (isBypass) {
       const payload = {
         id: `local-msg-${Date.now()}`,
