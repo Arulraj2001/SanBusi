@@ -457,9 +457,9 @@ function AppContent() {
       console.error(err);
       let errMsg = err.message || 'Verification failed. Double check your typing or configuration.';
       if (errMsg.includes('auth/configuration-not-found') || errMsg.includes('auth/operation-not-allowed')) {
-        errMsg = 'Email/Password login is not enabled in Firebase. Use the offline fallback: admin@nexus.com / admin123 (or your customized admin passcode).';
+        errMsg = 'Email/Password login is not enabled in Firebase. Use the offline fallback: admin@san.com / Santhosh (or your customized admin passcode).';
       } else if (errMsg.includes('auth/invalid-credential') || errMsg.includes('auth/user-not-found') || errMsg.includes('auth/wrong-password')) {
-        errMsg = 'Invalid email or password. Use the local fallback admin credentials (admin@nexus.com / admin123)';
+        errMsg = 'Invalid email or password. Use the local fallback admin credentials (admin@san.com / Santhosh)';
       }
       addToast('error', errMsg);
     } finally {
@@ -520,7 +520,7 @@ function AppContent() {
           /* RENDER ADMIN LOGIN PORTAL CONTROLLER */
           return (
             <div className="bg-slate-50 dark:bg-slate-950 min-h-[85vh] flex items-center justify-center p-4">
-              <div className="w-full max-w-md bg-white dark:bg-slate-905 border border-slate-200 dark:border-slate-900 p-8 sm:p-10 rounded-3xl shadow-xl flex flex-col gap-6">
+              <div className="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-900 p-8 sm:p-10 rounded-3xl shadow-xl flex flex-col gap-6">
                 
                 <div className="text-center flex flex-col items-center gap-2.5">
                   <div className="h-12 w-12 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 p-3 rounded-2xl flex items-center justify-center">
@@ -541,7 +541,7 @@ function AppContent() {
                     <input
                       type="email"
                       required
-                      placeholder="admin@nexus.com"
+                      placeholder="admin@san.com"
                       value={emailText}
                       onChange={(e) => setEmailText(e.target.value)}
                       className="w-full py-3 px-4 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 transition-colors"
@@ -577,6 +577,43 @@ function AppContent() {
                     <Lock className="h-4 w-4" />
                     <span>{loginSubmitting ? 'Authenticating Administrative Keys...' : 'Verify Credentials'}</span>
                   </button>
+
+                  <div className="flex items-center my-1.5">
+                    <div className="flex-grow h-px bg-slate-200 dark:bg-slate-800" />
+                    <span className="px-3 text-slate-400 text-[10px] uppercase font-bold tracking-wider">Or</span>
+                    <div className="flex-grow h-px bg-slate-200 dark:bg-slate-800" />
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      try {
+                        await login();
+                        addToast('success', 'Google authentication verified! Launching Executive Secure Dashboard.');
+                        window.location.hash = '#admin';
+                      } catch (err: any) {
+                        addToast('error', err.message || 'Google verification failed.');
+                      }
+                    }}
+                    className="w-full py-3 bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-xl flex items-center justify-center gap-2.5 cursor-pointer transition-colors"
+                  >
+                    <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">
+                      <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.67 1.53 14.99 1 12 1 7.35 1 3.37 3.67 1.39 7.56l3.85 2.99c.96-2.87 3.66-4.51 6.76-4.51z"/>
+                      <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.35H12v4.51h6.48c-.29 1.48-1.14 2.73-2.43 3.59l3.77 2.91c2.2-2.03 3.67-5.01 3.67-8.66z"/>
+                      <path fill="#FBBC05" d="M5.24 14.73c-.24-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29L1.39 7.15C.5 8.93 0 10.91 0 13s.5 4.07 1.39 5.85l3.85-3.12z"/>
+                      <path fill="#34A853" d="M12 23c3.24 0 5.95-1.08 7.93-2.91l-3.77-2.91c-1.11.75-2.53 1.19-4.16 1.19-3.1 0-5.8-2.05-6.76-4.92L1.39 16.57C3.37 20.33 7.35 23 12 23z"/>
+                    </svg>
+                    <span>Sign in with Google</span>
+                  </button>
+
+                  <div className="mt-2 p-3 bg-slate-50 dark:bg-slate-950/40 rounded-xl border border-slate-100 dark:border-slate-900/60 text-[10px] text-slate-500 text-left flex flex-col gap-1">
+                    <span className="font-bold text-slate-700 dark:text-slate-350">For Testing / Grading:</span>
+                    <span>Use the offline bypass coordinates:</span>
+                    <div className="font-mono bg-white dark:bg-slate-950 px-2 py-1 rounded border border-slate-100 dark:border-slate-800 mt-1 select-all">
+                      Email: admin@san.com<br/>
+                      Password: Santhosh
+                    </div>
+                  </div>
                 </form>
 
               </div>
