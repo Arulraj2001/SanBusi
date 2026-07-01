@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Whitelisted Admin Google Email addresses
         const ADMIN_EMAILS = [
           'samuelarul2001@gmail.com',
-          // 'second-admin@gmail.com' // Add your 2nd admin email address here!
+          'santhos2101@gmail.com'
         ];
 
         if (currentUser.email && ADMIN_EMAILS.includes(currentUser.email.toLowerCase())) {
