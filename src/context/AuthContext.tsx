@@ -37,8 +37,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        // Core Developer whitelist checks directly in logic for fast feedback
-        if (currentUser.email === 'samuelarul2001@gmail.com') {
+        // Whitelisted Admin Google Email addresses
+        const ADMIN_EMAILS = [
+          'samuelarul2001@gmail.com',
+          // 'second-admin@gmail.com' // Add your 2nd admin email address here!
+        ];
+
+        if (currentUser.email && ADMIN_EMAILS.includes(currentUser.email.toLowerCase())) {
           setIsAdmin(true);
           setLoading(false);
           return;
