@@ -77,57 +77,7 @@ export default function Navbar({ currentView, setCurrentView, isDark, toggleThem
               {isDark ? <Sun className="h-[18px] w-[18px]" /> : <Moon className="h-[18px] w-[18px]" />}
             </button>
 
-            {/* Dashboard shortcut if Admin logged in */}
-            {user && isAdmin && (
-              <button
-                onClick={() => handleNavClick('admin')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
-                  currentView === 'admin'
-                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/10'
-                    : 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-950/60'
-                }`}
-              >
-                <LayoutDashboard className="h-4 w-4" />
-                <span>Admin Panel</span>
-              </button>
-            )}
 
-            {/* Auth control */}
-            {user ? (
-              <div className="flex items-center gap-3">
-                <div className="flex flex-col items-end text-right">
-                  <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1">
-                    {user.displayName || user.email?.split('@')[0]}
-                    {isAdmin && <ShieldCheck className="h-3 w-3 text-emerald-500 fill-emerald-500/10" />}
-                  </span>
-                  <span className="text-[10px] text-slate-400 dark:text-slate-500">
-                    {isAdmin ? 'Administrator' : 'Guest'}
-                  </span>
-                </div>
-                {user.photoURL ? (
-                  <img src={user.photoURL} alt="photo" className="w-8 h-8 rounded-full border border-slate-300 dark:border-slate-700" referrerPolicy="no-referrer" />
-                ) : (
-                  <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center font-bold text-xs text-slate-600 dark:text-slate-300">
-                    {user.email?.charAt(0).toUpperCase()}
-                  </div>
-                )}
-                <button
-                  onClick={logout}
-                  className="p-2 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors cursor-pointer"
-                  title="Sign Out"
-                >
-                  <LogOut className="h-[18px] w-[18px]" />
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() => handleNavClick('admin')}
-                className="flex items-center gap-2 px-4 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-950 hover:bg-indigo-600 dark:hover:bg-indigo-400 hover:text-white dark:hover:text-white rounded-xl text-sm font-medium shadow-sm transition-all duration-300 cursor-pointer"
-              >
-                <LogIn className="h-4 w-4" />
-                <span>Admin Login</span>
-              </button>
-            )}
           </div>
 
           {/* Toggle Mobile Menu (Hamburger) */}
@@ -172,55 +122,7 @@ export default function Navbar({ currentView, setCurrentView, isDark, toggleThem
               </button>
             ))}
 
-            <div className="h-px bg-slate-200 dark:bg-slate-900 my-2" />
 
-            {/* Mobile Admin & Login controls */}
-            {user ? (
-              <div className="flex flex-col gap-3 px-2">
-                <div className="flex items-center gap-3">
-                  {user.photoURL ? (
-                    <img src={user.photoURL} alt="photo" className="w-8 h-8 rounded-full" referrerPolicy="no-referrer" />
-                  ) : (
-                    <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center font-bold text-xs">
-                      {user.email?.charAt(0).toUpperCase()}
-                    </div>
-                  )}
-                  <div className="flex flex-col">
-                    <span className="text-sm font-semibold flex items-center gap-1">
-                      {user.displayName || user.email?.split('@')[0]}
-                      {isAdmin && <ShieldCheck className="h-3 w-3 text-emerald-500 fill-emerald-500/10" />}
-                    </span>
-                    <span className="text-xs text-slate-400">{isAdmin ? 'Administrator' : 'Guest'}</span>
-                  </div>
-                </div>
-
-                {isAdmin && (
-                  <button
-                    onClick={() => handleNavClick('admin')}
-                    className="flex items-center justify-center gap-2 py-2.5 bg-indigo-50 dark:bg-indigo-950/20 text-indigo-600 dark:text-indigo-400 rounded-xl text-sm font-semibold"
-                  >
-                    <LayoutDashboard className="h-4 w-4" />
-                    <span>Go to Admin Dashboard</span>
-                  </button>
-                )}
-
-                <button
-                  onClick={logout}
-                  className="flex items-center justify-center gap-2 py-2.5 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 text-rose-500 dark:hover:bg-slate-900/40 rounded-xl text-sm font-semibold"
-                >
-                  <LogOut className="h-4 w-4" />
-                  <span>Log Out</span>
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() => handleNavClick('admin')}
-                className="flex items-center justify-center gap-2 py-2.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl text-sm font-semibold"
-              >
-                <LogIn className="h-4 w-4" />
-                <span>Admin Login Portal</span>
-              </button>
-            )}
           </motion.div>
         )}
       </AnimatePresence>

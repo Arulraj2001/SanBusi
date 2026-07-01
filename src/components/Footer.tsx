@@ -1,5 +1,6 @@
-import { Mail, Phone, MapPin, Linkedin, Github, Twitter, Facebook } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin, Github, Twitter, Facebook, Lock, LayoutDashboard, LogOut } from 'lucide-react';
 import { WebsiteSettings } from '../types';
+import { useAuth } from '../context/AuthContext';
 
 interface FooterProps {
   setCurrentView: (view: string) => void;
@@ -7,6 +8,8 @@ interface FooterProps {
 }
 
 export default function Footer({ setCurrentView, settings }: FooterProps) {
+  const { user, logout } = useAuth();
+
   const socialIcons = {
     linkedin: <Linkedin className="h-5 w-5" />,
     github: <Github className="h-5 w-5" />,
@@ -156,6 +159,36 @@ export default function Footer({ setCurrentView, settings }: FooterProps) {
           <div className="flex items-center gap-6">
             <span className="hover:text-slate-300 transition-colors cursor-pointer" onClick={() => handleNavClick('about')}>About Corporate Profile</span>
             <span className="hover:text-slate-300 transition-colors cursor-pointer" onClick={() => handleNavClick('contact')}>Privacy & Security Guardrails</span>
+            
+            {/* Admin Login / Panel Icon Trigger */}
+            <div className="flex items-center gap-3 border-l border-slate-800 pl-4">
+              {user ? (
+                <>
+                  <button
+                    onClick={() => handleNavClick('admin')}
+                    className="p-1.5 text-slate-500 hover:text-indigo-400 rounded-lg hover:bg-slate-800/40 transition-colors cursor-pointer flex items-center justify-center"
+                    title="Go to Admin Panel"
+                  >
+                    <LayoutDashboard className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    onClick={logout}
+                    className="p-1.5 text-slate-500 hover:text-rose-400 rounded-lg hover:bg-slate-800/40 transition-colors cursor-pointer flex items-center justify-center"
+                    title="Sign Out"
+                  >
+                    <LogOut className="h-3.5 w-3.5" />
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => handleNavClick('admin')}
+                  className="p-1.5 text-slate-500 hover:text-indigo-400 rounded-lg hover:bg-slate-800/40 transition-colors cursor-pointer flex items-center justify-center"
+                  title="Admin Access Control"
+                >
+                  <Lock className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
