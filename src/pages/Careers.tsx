@@ -93,19 +93,17 @@ export default function Careers({ careers, addToast, settings }: CareersProps) {
     jobsSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const bannerImg = settings?.careersBannerUrl || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80";
+
   return (
     <div className="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300">
       
       {/* 1. HERO HEADER */}
       <section className="relative py-28 bg-slate-900 text-white border-b border-slate-800 text-center overflow-hidden">
-        {settings?.careersBannerUrl ? (
-          <div 
-            className="absolute inset-0 bg-cover bg-center opacity-25 pointer-events-none"
-            style={{ backgroundImage: `url(${settings.careersBannerUrl})` }}
-          />
-        ) : (
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(99,102,241,0.05),transparent)] pointer-events-none" />
-        )}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-25 pointer-events-none"
+          style={{ backgroundImage: `url(${bannerImg})` }}
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent pointer-events-none" />
 
         <div className="max-w-4xl mx-auto px-4 relative z-10">

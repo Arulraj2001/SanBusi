@@ -47,19 +47,17 @@ export default function FAQ({ faqs, setView, settings }: FaqProps) {
     setExpandedId(expandedId === id ? null : id);
   };
 
+  const bannerImg = settings?.faqBannerUrl || "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80";
+
   return (
     <div className="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300">
       
       {/* 1. HERO HEADER */}
       <section className="relative py-28 bg-slate-900 text-white border-b border-slate-800 text-center overflow-hidden">
-        {settings?.faqBannerUrl ? (
-          <div 
-            className="absolute inset-0 bg-cover bg-center opacity-25 pointer-events-none"
-            style={{ backgroundImage: `url(${settings.faqBannerUrl})` }}
-          />
-        ) : (
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(99,102,241,0.05),transparent)] pointer-events-none" />
-        )}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-25 pointer-events-none"
+          style={{ backgroundImage: `url(${bannerImg})` }}
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent pointer-events-none" />
 
         <div className="max-w-4xl mx-auto px-4 relative z-10">

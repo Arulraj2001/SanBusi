@@ -79,19 +79,17 @@ export default function About({ settings }: AboutProps) {
     return <IconComponent className="h-6 w-6 text-indigo-500" />;
   };
 
+  const bannerImg = settings?.aboutBannerUrl || "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80";
+
   return (
     <div className="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300">
       
       {/* 1. HERO TITLE */}
       <section className="relative py-24 bg-slate-900 text-white border-b border-slate-800 text-center overflow-hidden">
-        {settings?.aboutBannerUrl ? (
-          <div 
-            className="absolute inset-0 bg-cover bg-center opacity-25 pointer-events-none"
-            style={{ backgroundImage: `url(${settings.aboutBannerUrl})` }}
-          />
-        ) : (
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(99,102,241,0.05),transparent)] pointer-events-none" />
-        )}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-25 pointer-events-none"
+          style={{ backgroundImage: `url(${bannerImg})` }}
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent pointer-events-none" />
 
         <div className="max-w-4xl mx-auto px-4 relative z-10">
