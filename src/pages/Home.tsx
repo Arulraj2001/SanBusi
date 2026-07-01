@@ -133,14 +133,14 @@ export default function Home({ services, portfolios, testimonials, setView, setS
         {/* Background video loop with low opacity */}
         {settings?.homeVideoUrl && (
           <video
+            key={settings.homeVideoUrl}
+            src={settings.homeVideoUrl}
             autoPlay
             loop
             muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover opacity-[0.08] dark:opacity-[0.16] pointer-events-none z-0"
-          >
-            <source src={settings.homeVideoUrl} type="video/mp4" />
-          </video>
+          />
         )}
 
         {/* Subtle moving background glow */}
