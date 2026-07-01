@@ -130,7 +130,7 @@ export default function Home({ services, portfolios, testimonials, setView, setS
       {/* 1. HERO SECTION */}
       <section className="relative overflow-hidden py-24 lg:py-32 bg-white dark:bg-slate-950 border-b border-slate-150 dark:border-slate-900 flex items-center min-h-[85vh]">
         
-        {/* Background media loop with low opacity */}
+        {/* Background media loop with admin-controlled opacity */}
         {settings?.homeVideoUrl ? (
           <video
             key={settings.homeVideoUrl}
@@ -139,12 +139,16 @@ export default function Home({ services, portfolios, testimonials, setView, setS
             loop
             muted
             playsInline
-            className="absolute inset-0 w-full h-full object-cover opacity-[0.08] dark:opacity-[0.16] pointer-events-none z-0"
+            className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
+            style={{ opacity: settings.homeVideoOpacity ?? 0.12 }}
           />
         ) : (
           <div
-            className="absolute inset-0 w-full h-full bg-cover bg-center opacity-[0.08] dark:opacity-[0.16] pointer-events-none z-0"
-            style={{ backgroundImage: `url(${settings?.homeImageUrl || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80"})` }}
+            className="absolute inset-0 w-full h-full bg-cover bg-center pointer-events-none z-0"
+            style={{
+              backgroundImage: `url(${settings?.homeImageUrl || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80"})`,
+              opacity: settings?.homeVideoOpacity ?? 0.12
+            }}
           />
         )}
 

@@ -168,6 +168,7 @@ export default function AdminDashboard({
   const [setInGithub, setSetInGithub] = useState('');
   const [setInTwitter, setSetInTwitter] = useState('');
   const [setHomeVideo, setSetHomeVideo] = useState('');
+  const [setHomeVideoOpacity, setSetHomeVideoOpacity] = useState(0.12);
   const [setHomeImage, setSetHomeImage] = useState('');
   const [setSrvBanner, setSetSrvBanner] = useState('');
   const [setPortBanner, setSetPortBanner] = useState('');
@@ -211,6 +212,7 @@ export default function AdminDashboard({
       setSetInGithub(settings.socialLinks?.github || '');
       setSetInTwitter(settings.socialLinks?.twitter || '');
       setSetHomeVideo(settings.homeVideoUrl || '');
+      setSetHomeVideoOpacity(settings.homeVideoOpacity ?? 0.12);
       setSetHomeImage(settings.homeImageUrl || '');
       setSetSrvBanner(settings.servicesBannerUrl || '');
       setSetPortBanner(settings.portfolioBannerUrl || '');
@@ -1152,6 +1154,7 @@ export default function AdminDashboard({
         twitter: setInTwitter.trim() || ""
       },
       homeVideoUrl: setHomeVideo.trim(),
+      homeVideoOpacity: setHomeVideoOpacity,
       homeImageUrl: setHomeImage.trim(),
       servicesBannerUrl: setSrvBanner.trim(),
       portfolioBannerUrl: setPortBanner.trim(),
@@ -2894,6 +2897,34 @@ export default function AdminDashboard({
                       className="py-3 px-4 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 transition-colors"
                     />
                   </div>
+                </div>
+
+                {/* Opacity / Transparency Slider */}
+                <div className="flex flex-col gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Hero Background Opacity / Transparency</label>
+                    <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-2.5 py-1 rounded-lg tabular-nums">
+                      {Math.round(setHomeVideoOpacity * 100)}%
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value={setHomeVideoOpacity}
+                    onChange={(e) => setSetHomeVideoOpacity(parseFloat(e.target.value))}
+                    className="w-full h-2 rounded-full appearance-none cursor-pointer accent-indigo-600"
+                    style={{
+                      background: `linear-gradient(to right, #6366f1 0%, #6366f1 ${setHomeVideoOpacity * 100}%, #e2e8f0 ${setHomeVideoOpacity * 100}%, #e2e8f0 100%)`
+                    }}
+                  />
+                  <div className="flex justify-between text-[10px] text-slate-400 font-medium">
+                    <span>0% — Invisible</span>
+                    <span>50% — Half</span>
+                    <span>100% — Full</span>
+                  </div>
+                  <p className="text-[10px] text-slate-400 leading-relaxed">Controls how visible the background video or image is in the hero section. Lower = more subtle watermark effect. Higher = stronger presence.</p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

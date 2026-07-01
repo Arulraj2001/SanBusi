@@ -104,6 +104,7 @@ export interface WebsiteSettings {
   aboutTeamMembers?: Array<{ name: string; role: string; bio: string; image: string }>;
   homeVideoUrl?: string;
   homeImageUrl?: string;
+  homeVideoOpacity?: number; // 0–1, controls hero background media transparency
   servicesBannerUrl?: string;
   portfolioBannerUrl?: string;
   blogBannerUrl?: string;

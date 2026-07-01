@@ -634,6 +634,7 @@ function AppContent() {
             services={services}
             portfolios={portfolios}
             testimonials={testimonials}
+            settings={settings}
             setView={setCurrentView}
             setSelectedProject={(proj) => {
               setSelectedProject(proj);
