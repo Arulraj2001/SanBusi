@@ -54,7 +54,7 @@ export default function Services({ services, setView }: ServicesProps) {
             No service catalog entries matched your active database records.
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
             {services.map((service, index) => {
               const cardId = service.id || `srv-${index}`;
               const isExpanded = expandedKey === cardId;
