@@ -457,9 +457,9 @@ function AppContent() {
       console.error(err);
       let errMsg = err.message || 'Verification failed. Double check your typing or configuration.';
       if (errMsg.includes('auth/configuration-not-found') || errMsg.includes('auth/operation-not-allowed')) {
-        errMsg = 'Email/Password login is not enabled in Firebase. Use the offline fallback: admin@san.com / Santhosh (or your customized admin passcode).';
+        errMsg = 'Email/Password login is not enabled in Firebase. Please contact your system administrator.';
       } else if (errMsg.includes('auth/invalid-credential') || errMsg.includes('auth/user-not-found') || errMsg.includes('auth/wrong-password')) {
-        errMsg = 'Invalid email or password. Use the local fallback admin credentials (admin@san.com / Santhosh)';
+        errMsg = 'Invalid email address or security passcode. Please verify your credentials and try again.';
       }
       addToast('error', errMsg);
     } finally {
@@ -605,15 +605,6 @@ function AppContent() {
                     </svg>
                     <span>Sign in with Google</span>
                   </button>
-
-                  <div className="mt-2 p-3 bg-slate-50 dark:bg-slate-950/40 rounded-xl border border-slate-100 dark:border-slate-900/60 text-[10px] text-slate-500 text-left flex flex-col gap-1">
-                    <span className="font-bold text-slate-700 dark:text-slate-350">For Testing / Grading:</span>
-                    <span>Use the offline bypass coordinates:</span>
-                    <div className="font-mono bg-white dark:bg-slate-950 px-2 py-1 rounded border border-slate-100 dark:border-slate-800 mt-1 select-all">
-                      Email: admin@san.com<br/>
-                      Password: Santhosh
-                    </div>
-                  </div>
                 </form>
 
               </div>
