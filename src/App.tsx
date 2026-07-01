@@ -654,6 +654,7 @@ function AppContent() {
         setCurrentView={setCurrentView}
         isDark={isDark}
         toggleTheme={toggleTheme}
+        homeVideoActive={currentView === 'home' && !!settings?.homeVideoUrl}
       />
 
       {/* 2. Main Page Render viewport */}

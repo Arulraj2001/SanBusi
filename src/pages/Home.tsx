@@ -128,7 +128,9 @@ export default function Home({ services, portfolios, testimonials, setView, setS
     >
       
       {/* 1. HERO SECTION */}
-      <section className="relative overflow-hidden py-24 lg:py-32 bg-white dark:bg-slate-950 border-b border-slate-150 dark:border-slate-900 flex items-center min-h-[85vh]">
+      <section className={`relative overflow-hidden py-24 lg:py-32 border-b border-slate-150 dark:border-slate-900 flex items-center min-h-[85vh] ${
+        settings?.homeVideoUrl ? 'bg-slate-950' : 'bg-white dark:bg-slate-950'
+      }`}>
         
         {/* Background media loop with admin-controlled opacity */}
         {settings?.homeVideoUrl ? (
@@ -179,7 +181,11 @@ export default function Home({ services, portfolios, testimonials, setView, setS
               {/* Badge */}
               <motion.div
                 variants={fadeInUp}
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-100/50 dark:border-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-wider select-none"
+                className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-bold uppercase tracking-wider select-none ${
+                  settings?.homeVideoUrl
+                    ? 'bg-indigo-500/20 border-indigo-400/30 text-indigo-300'
+                    : 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-100/50 dark:border-indigo-900/30 text-indigo-600 dark:text-indigo-400'
+                }`}
               >
                 <Sparkles className="h-3.5 w-3.5 animate-pulse" />
                 <span>Enterprise Digital Solutions</span>
@@ -188,17 +194,21 @@ export default function Home({ services, portfolios, testimonials, setView, setS
               {/* Title */}
               <motion.h1
                 variants={fadeInUp}
-                className="text-4xl sm:text-5xl lg:text-[54px] font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.12]"
+                className={`text-4xl sm:text-5xl lg:text-[54px] font-extrabold tracking-tight leading-[1.12] ${
+                  settings?.homeVideoUrl ? 'text-white' : 'text-slate-900 dark:text-white'
+                }`}
               >
                 We Build Enterprise<br />
                 Digital Systems With<br />
-                <span className="text-indigo-600 dark:text-indigo-400 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400">Precision Engineering</span>
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-violet-400">Precision Engineering</span>
               </motion.h1>
 
               {/* Subtext */}
               <motion.p
                 variants={fadeInUp}
-                className="text-base sm:text-lg text-slate-500 dark:text-slate-400 leading-relaxed max-w-xl"
+                className={`text-base sm:text-lg leading-relaxed max-w-xl ${
+                  settings?.homeVideoUrl ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'
+                }`}
               >
                 Nexus Digital helps enterprises design, build, and scale custom software, cloud infrastructure, e-commerce platforms, and AI-powered automation systems with reliable engineering and measurable outcomes.
               </motion.p>
@@ -223,7 +233,11 @@ export default function Home({ services, portfolios, testimonials, setView, setS
                   whileTap="tap"
                   variants={scaleHover}
                   onClick={() => setView('portfolio')}
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 border border-slate-200 dark:border-slate-800 hover:border-slate-350 dark:hover:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-bold rounded-xl shadow-sm cursor-pointer"
+                  className={`w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 font-bold rounded-xl shadow-sm cursor-pointer border transition-colors ${
+                    settings?.homeVideoUrl
+                      ? 'border-white/20 bg-white/10 hover:bg-white/15 text-white backdrop-blur-sm'
+                      : 'border-slate-200 dark:border-slate-800 hover:border-slate-350 dark:hover:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300'
+                  }`}
                 >
                   <span>View Case Studies</span>
                   <ArrowRight className="h-4.5 w-4.5" />
@@ -244,8 +258,8 @@ export default function Home({ services, portfolios, testimonials, setView, setS
                     40+
                   </div>
                 </div>
-                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                  Trusted by <strong className="text-slate-800 dark:text-slate-200">40+ businesses</strong> to deliver impact at scale.
+                <p className={`text-xs sm:text-sm ${ settings?.homeVideoUrl ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400' }`}>
+                  Trusted by <strong className={settings?.homeVideoUrl ? 'text-white' : 'text-slate-800 dark:text-slate-200'}>40+ businesses</strong> to deliver impact at scale.
                 </p>
               </motion.div>
             </motion.div>
@@ -266,89 +280,52 @@ export default function Home({ services, portfolios, testimonials, setView, setS
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
-                className="w-full max-w-[460px] bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-850 p-6 sm:p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 relative z-10"
+                className={`w-full max-w-[460px] p-6 sm:p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 relative z-10 ${
+                  settings?.homeVideoUrl
+                    ? 'bg-white/10 backdrop-blur-md border border-white/15'
+                    : 'bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-850'
+                }`}
               >
                 {/* Header */}
-                <div className="flex items-center gap-2.5 border-b border-slate-100 dark:border-slate-800 pb-5 mb-6">
-                  <BarChart2 className="h-5 w-5 text-indigo-500 shrink-0" />
-                  <span className="font-bold text-sm text-slate-800 dark:text-slate-200">Nexus Delivery Framework</span>
+                <div className={`flex items-center gap-2.5 pb-5 mb-6 border-b ${ settings?.homeVideoUrl ? 'border-white/15' : 'border-slate-100 dark:border-slate-800' }`}>
+                  <BarChart2 className="h-5 w-5 text-indigo-400 shrink-0" />
+                  <span className={`font-bold text-sm ${ settings?.homeVideoUrl ? 'text-white' : 'text-slate-800 dark:text-slate-200' }`}>Nexus Delivery Framework</span>
                 </div>
 
                 {/* 2x2 Feature Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
                   {/* Item 1 */}
-                  <div className="flex flex-col gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-violet-50 dark:bg-violet-950/30 flex items-center justify-center shrink-0">
-                      <Code2 className="h-5 w-5 text-violet-600 dark:text-violet-400" />
+                  {[{ icon: <Code2 className="h-5 w-5 text-violet-400" />, iconBg: 'bg-violet-500/20', title: 'Software Engineering', desc: 'Custom web apps, SaaS platforms and enterprise systems.' },
+                    { icon: <Cloud className="h-5 w-5 text-blue-400" />, iconBg: 'bg-blue-500/20', title: 'Cloud Infrastructure', desc: 'Secure, scalable and cost-optimized cloud infrastructure.' },
+                    { icon: <Sparkles className="h-5 w-5 text-indigo-400" />, iconBg: 'bg-indigo-500/20', title: 'AI Integration', desc: 'AI automation, intelligent workflows and business intelligence.' },
+                    { icon: <ShoppingCart className="h-5 w-5 text-fuchsia-400" />, iconBg: 'bg-fuchsia-500/20', title: 'E-commerce Systems', desc: 'High-performance stores, payment flows and admin dashboards.' }
+                  ].map((item, i) => (
+                    <div key={i} className="flex flex-col gap-3">
+                      <div className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 ${ settings?.homeVideoUrl ? item.iconBg : 'bg-slate-100 dark:bg-slate-800' }`}>
+                        {item.icon}
+                      </div>
+                      <div>
+                        <h4 className={`text-xs sm:text-sm font-bold ${ settings?.homeVideoUrl ? 'text-white' : 'text-slate-800 dark:text-white' }`}>{item.title}</h4>
+                        <p className={`text-[11px] sm:text-xs leading-normal mt-1 ${ settings?.homeVideoUrl ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400' }`}>{item.desc}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="text-xs sm:text-sm font-bold text-slate-800 dark:text-white">Software Engineering</h4>
-                      <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 leading-normal mt-1">
-                        Custom web apps, SaaS platforms and enterprise systems.
-                      </p>
-                    </div>
-                  </div>
-                  {/* Item 2 */}
-                  <div className="flex flex-col gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-blue-50 dark:bg-blue-950/30 flex items-center justify-center shrink-0">
-                      <Cloud className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                    </div>
-                    <div>
-                      <h4 className="text-xs sm:text-sm font-bold text-slate-800 dark:text-white">Cloud Infrastructure</h4>
-                      <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 leading-normal mt-1">
-                        Secure, scalable and cost-optimized cloud infrastructure.
-                      </p>
-                    </div>
-                  </div>
-                  {/* Item 3 */}
-                  <div className="flex flex-col gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 flex items-center justify-center shrink-0">
-                      <Sparkles className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                    </div>
-                    <div>
-                      <h4 className="text-xs sm:text-sm font-bold text-slate-800 dark:text-white">AI Integration</h4>
-                      <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 leading-normal mt-1">
-                        AI automation, intelligent workflows and business intelligence.
-                      </p>
-                    </div>
-                  </div>
-                  {/* Item 4 */}
-                  <div className="flex flex-col gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-fuchsia-50 dark:bg-fuchsia-950/30 flex items-center justify-center shrink-0">
-                      <ShoppingCart className="h-5 w-5 text-fuchsia-600 dark:text-fuchsia-400" />
-                    </div>
-                    <div>
-                      <h4 className="text-xs sm:text-sm font-bold text-slate-800 dark:text-white">E-commerce Systems</h4>
-                      <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 leading-normal mt-1">
-                        High-performance stores, payment flows and admin dashboards.
-                      </p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
 
                 {/* Card Stats Footer */}
-                <div className="grid grid-cols-3 gap-2 border-t border-slate-100 dark:border-slate-800 pt-6">
-                  <div className="flex items-center gap-2">
-                    <Trophy className="h-4.5 w-4.5 text-indigo-500 shrink-0" />
-                    <div className="flex flex-col leading-none">
-                      <span className="text-sm font-extrabold text-slate-800 dark:text-white">40+</span>
-                      <span className="text-[9px] text-slate-400 uppercase mt-0.5 tracking-wider font-mono">Delivered</span>
+                <div className={`grid grid-cols-3 gap-2 pt-6 border-t ${ settings?.homeVideoUrl ? 'border-white/15' : 'border-slate-100 dark:border-slate-800' }`}>
+                  {[{ icon: <Trophy className="h-4.5 w-4.5 text-indigo-400 shrink-0" />, val: '40+', lbl: 'Delivered' },
+                    { icon: <ShieldCheck className="h-4.5 w-4.5 text-indigo-400 shrink-0" />, val: '99.9%', lbl: 'Uptime' },
+                    { icon: <Smile className="h-4.5 w-4.5 text-indigo-400 shrink-0" />, val: '35+', lbl: 'Clients' }
+                  ].map((s, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      {s.icon}
+                      <div className="flex flex-col leading-none">
+                        <span className={`text-sm font-extrabold ${ settings?.homeVideoUrl ? 'text-white' : 'text-slate-800 dark:text-white' }`}>{s.val}</span>
+                        <span className={`text-[9px] uppercase mt-0.5 tracking-wider font-mono ${ settings?.homeVideoUrl ? 'text-slate-400' : 'text-slate-400' }`}>{s.lbl}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <ShieldCheck className="h-4.5 w-4.5 text-indigo-500 shrink-0" />
-                    <div className="flex flex-col leading-none">
-                      <span className="text-sm font-extrabold text-slate-800 dark:text-white">99.9%</span>
-                      <span className="text-[9px] text-slate-400 uppercase mt-0.5 tracking-wider font-mono">Uptime</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Smile className="h-4.5 w-4.5 text-indigo-500 shrink-0" />
-                    <div className="flex flex-col leading-none">
-                      <span className="text-sm font-extrabold text-slate-800 dark:text-white">35+</span>
-                      <span className="text-[9px] text-slate-400 uppercase mt-0.5 tracking-wider font-mono">Clients</span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
 
               </motion.div>

@@ -8,9 +8,10 @@ interface NavbarProps {
   setCurrentView: (view: string) => void;
   isDark: boolean;
   toggleTheme: () => void;
+  homeVideoActive?: boolean;
 }
 
-export default function Navbar({ currentView, setCurrentView, isDark, toggleTheme }: NavbarProps) {
+export default function Navbar({ currentView, setCurrentView, isDark, toggleTheme, homeVideoActive }: NavbarProps) {
   const { user, isAdmin, login, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -32,7 +33,11 @@ export default function Navbar({ currentView, setCurrentView, isDark, toggleThem
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-white/70 dark:bg-slate-950/70 backdrop-blur-md border-b border-slate-200 dark:border-slate-900 transition-colors duration-300">
+    <nav className={`sticky top-0 z-50 w-full backdrop-blur-md border-b transition-colors duration-500 ${
+      homeVideoActive
+        ? 'bg-slate-950/60 border-white/10'
+        : 'bg-white/70 dark:bg-slate-950/70 border-slate-200 dark:border-slate-900'
+    }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
@@ -42,8 +47,8 @@ export default function Navbar({ currentView, setCurrentView, isDark, toggleThem
               <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
                 <span className="text-white font-bold text-lg tracking-wider">N</span>
               </div>
-              <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
-                Nexus<span className="text-indigo-600 dark:text-indigo-400 font-medium">Digital</span>
+              <span className={`text-xl font-bold tracking-tight ${ homeVideoActive ? 'text-white' : 'text-slate-900 dark:text-white' }`}>
+                Nexus<span className="text-indigo-400 font-medium">Digital</span>
               </span>
             </div>
           </div>
@@ -56,8 +61,10 @@ export default function Navbar({ currentView, setCurrentView, isDark, toggleThem
                 onClick={() => handleNavClick(item.value)}
                 className={`text-[15px] font-medium transition-colors cursor-pointer capitalize ${
                   currentView === item.value
-                    ? 'text-indigo-600 dark:text-indigo-400 font-semibold'
-                    : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+                    ? 'text-indigo-400 font-semibold'
+                    : homeVideoActive
+                      ? 'text-slate-300 hover:text-white'
+                      : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
                 }`}
               >
                 {item.label}
@@ -71,7 +78,11 @@ export default function Navbar({ currentView, setCurrentView, isDark, toggleThem
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2.5 text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 rounded-xl bg-slate-100 dark:bg-slate-900 transition-colors"
+              className={`p-2.5 rounded-xl transition-colors ${
+                homeVideoActive
+                  ? 'text-slate-300 hover:text-white bg-white/10 hover:bg-white/15'
+                  : 'text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 bg-slate-100 dark:bg-slate-900'
+              }`}
               aria-label="Toggle Theme"
             >
               {isDark ? <Sun className="h-[18px] w-[18px]" /> : <Moon className="h-[18px] w-[18px]" />}
