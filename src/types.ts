@@ -103,6 +103,7 @@ export interface WebsiteSettings {
   aboutCoreValues?: Array<{ title: string; text: string; icon?: string }>;
   aboutTeamMembers?: Array<{ name: string; role: string; bio: string; image: string }>;
   homeVideoUrl?: string;
+  homeImageUrl?: string;
   servicesBannerUrl?: string;
   portfolioBannerUrl?: string;
   blogBannerUrl?: string;

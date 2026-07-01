@@ -168,6 +168,7 @@ export default function AdminDashboard({
   const [setInGithub, setSetInGithub] = useState('');
   const [setInTwitter, setSetInTwitter] = useState('');
   const [setHomeVideo, setSetHomeVideo] = useState('');
+  const [setHomeImage, setSetHomeImage] = useState('');
   const [setSrvBanner, setSetSrvBanner] = useState('');
   const [setPortBanner, setSetPortBanner] = useState('');
   const [setBlgBanner, setSetBlgBanner] = useState('');
@@ -210,6 +211,7 @@ export default function AdminDashboard({
       setSetInGithub(settings.socialLinks?.github || '');
       setSetInTwitter(settings.socialLinks?.twitter || '');
       setSetHomeVideo(settings.homeVideoUrl || '');
+      setSetHomeImage(settings.homeImageUrl || '');
       setSetSrvBanner(settings.servicesBannerUrl || '');
       setSetPortBanner(settings.portfolioBannerUrl || '');
       setSetBlgBanner(settings.blogBannerUrl || '');
@@ -1150,6 +1152,7 @@ export default function AdminDashboard({
         twitter: setInTwitter.trim() || ""
       },
       homeVideoUrl: setHomeVideo.trim(),
+      homeImageUrl: setHomeImage.trim(),
       servicesBannerUrl: setSrvBanner.trim(),
       portfolioBannerUrl: setPortBanner.trim(),
       blogBannerUrl: setBlgBanner.trim(),
@@ -2870,15 +2873,27 @@ export default function AdminDashboard({
 
                 <h4 className="text-sm font-bold uppercase tracking-wider text-slate-400">Home Video & Sub-page Header Banners</h4>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Homepage Background Hero Video URL (MP4)</label>
-                  <input
-                    type="text"
-                    value={setHomeVideo}
-                    onChange={(e) => setSetHomeVideo(e.target.value)}
-                    placeholder="https://assets.mixkit.co/videos/preview/..."
-                    className="py-3 px-4 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 transition-colors"
-                  />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-350">Homepage Background Hero Video URL (MP4)</label>
+                    <input
+                      type="text"
+                      value={setHomeVideo}
+                      onChange={(e) => setSetHomeVideo(e.target.value)}
+                      placeholder="https://assets.mixkit.co/videos/preview/..."
+                      className="py-3 px-4 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 transition-colors"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-350">Homepage Background Hero Image URL (Fallback)</label>
+                    <input
+                      type="text"
+                      value={setHomeImage}
+                      onChange={(e) => setSetHomeImage(e.target.value)}
+                      placeholder="https://images.unsplash.com/photo-..."
+                      className="py-3 px-4 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 transition-colors"
+                    />
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -407,6 +407,7 @@ export const INITIAL_SETTINGS: WebsiteSettings = {
   seoTitle: "Nexus Digital Solutions Agency | Custom Software & SaaS Architecture",
   seoDescription: "An elite modern Digital solutions studio crafting resilient software, responsive single-page web experiences, native mobile engines, and automated workflow pathways.",
   homeVideoUrl: "https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-screen-loop-34448-large.mp4",
+  homeImageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80",
   servicesBannerUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
   portfolioBannerUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
   blogBannerUrl: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1200&q=80",
