@@ -335,19 +335,16 @@ export default function Home({ services, portfolios, testimonials, setView, setS
         </div>
       </section>
 
-      {/* 2. TRUST STRIP WITH INFINITE COLOR GRADIENT BACKGROUND & TICKER */}
-      <motion.section
-        animate={{
-          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
-        }}
-        transition={{
-          duration: 12,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-        className="py-10 bg-gradient-to-r from-indigo-50/50 via-violet-50/50 to-purple-50/50 dark:from-indigo-950/20 dark:via-violet-950/20 dark:to-purple-950/20 bg-[length:200%_auto] border-b border-slate-150 dark:border-slate-900/40 relative overflow-hidden"
-      >
-        <div className="max-w-7xl mx-auto px-4 overflow-hidden relative">
+      {/* ═══════════════════════════════════════════════════ */}
+      {/* 2. TECH STACK TRUST STRIP                          */}
+      {/* ═══════════════════════════════════════════════════ */}
+      <section className="relative py-12 border-b border-slate-200 dark:border-slate-900 overflow-hidden bg-white dark:bg-slate-950">
+        {/* subtle gradient shimmer bg */}
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-50/40 via-violet-50/30 to-purple-50/40 dark:from-indigo-950/10 dark:via-violet-950/10 dark:to-purple-950/10 pointer-events-none" />
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-300/40 dark:via-indigo-700/30 to-transparent" />
+        <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-300/30 dark:via-violet-700/20 to-transparent" />
+
+        <div className="max-w-7xl mx-auto px-4 overflow-hidden relative z-10">
           <p className="text-[10px] sm:text-xs font-mono font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 text-center mb-6 relative z-10">
             Trusted by modern businesses. Built with leading technologies.
           </p>
@@ -444,171 +441,157 @@ export default function Home({ services, portfolios, testimonials, setView, setS
             </motion.div>
           </div>
         </div>
-      </motion.section>
+      </section>
 
-      {/* 3. CORE SERVICES SECTION (Staggered cards reveal on scroll) */}
-      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center text-center gap-4 mb-16">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            Our Core Services
-          </h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 max-w-xl">
-            End-to-end digital solutions tailored for enterprise success.
-          </p>
-        </div>
+      {/* ═══════════════════════════════════════════════════ */}
+      {/* 3. CORE SERVICES SECTION                           */}
+      {/* ═══════════════════════════════════════════════════ */}
+      <section className="relative py-28 overflow-hidden">
+        {/* Section background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-50 via-white to-indigo-50/30 dark:from-slate-950 dark:via-slate-950 dark:to-indigo-950/10 pointer-events-none" />
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-200 dark:via-indigo-900/50 to-transparent" />
 
-        {services.length === 0 ? (
-          <div className="py-16 text-center text-slate-500 font-mono text-xs">
-            No service catalog entries matched your active database records.
-          </div>
-        ) : (
-          <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_15%,white_85%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,white_15%,white_85%,transparent)] py-16">
-            <div className="animate-marquee-slow flex gap-8 whitespace-nowrap min-w-max">
-              {/* Loop 1 */}
-              {services.map((service, index) => {
-                const theme = serviceThemes[index % serviceThemes.length];
+        {/* Soft decorative glow */}
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[300px] rounded-full bg-indigo-100/60 dark:bg-indigo-900/10 blur-[100px] pointer-events-none" />
 
-                return (
-                  <motion.div
-                    key={`srv-${service.id || index}-1`}
-                    whileHover={{
-                      scale: 1.025,
-                      boxShadow: "0 22px 45px -15px rgba(15, 23, 42, 0.08)",
-                      borderColor: "rgba(99, 102, 241, 0.35)",
-                      y: -6,
-                      transition: { duration: 0.3 }
-                    }}
-                    className="w-[340px] shrink-0 whitespace-normal p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-900/60 shadow-sm flex flex-col justify-between h-[280px] group cursor-pointer"
-                  >
-                    <div className="flex flex-col gap-5">
-                      {/* Icon with Hover Rotation */}
-                      <motion.div
-                        whileHover={{ rotate: 5, scale: 1.05 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                        className={`h-12 w-12 rounded-xl ${theme.bg} flex items-center justify-center shrink-0 border border-transparent`}
-                      >
-                        <RenderIcon name={service.icon} className={`h-6 w-6 ${theme.text}`} />
-                      </motion.div>
-                      
-                      <div className="flex flex-col gap-2">
-                        <h3 className="text-base font-bold text-slate-800 dark:text-white leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                          {service.title}
-                        </h3>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mt-1">
-                          {service.description.length > 130 ? `${service.description.slice(0, 130)}...` : service.description}
-                        </p>
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={() => setView('services')}
-                      className={`flex items-center gap-1.5 text-xs font-bold ${theme.text} hover:opacity-85 transition-opacity cursor-pointer text-left w-fit mt-2`}
-                    >
-                      <span>Learn more</span>
-                      <ChevronRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform duration-200" />
-                    </button>
-                  </motion.div>
-                );
-              })}
-
-              {/* Loop 2 */}
-              {services.map((service, index) => {
-                const theme = serviceThemes[index % serviceThemes.length];
-
-                return (
-                  <motion.div
-                    key={`srv-${service.id || index}-2`}
-                    whileHover={{
-                      scale: 1.025,
-                      boxShadow: "0 22px 45px -15px rgba(15, 23, 42, 0.08)",
-                      borderColor: "rgba(99, 102, 241, 0.35)",
-                      y: -6,
-                      transition: { duration: 0.3 }
-                    }}
-                    className="w-[340px] shrink-0 whitespace-normal p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-900/60 shadow-sm flex flex-col justify-between h-[280px] group cursor-pointer"
-                  >
-                    <div className="flex flex-col gap-5">
-                      {/* Icon with Hover Rotation */}
-                      <motion.div
-                        whileHover={{ rotate: 5, scale: 1.05 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                        className={`h-12 w-12 rounded-xl ${theme.bg} flex items-center justify-center shrink-0 border border-transparent`}
-                      >
-                        <RenderIcon name={service.icon} className={`h-6 w-6 ${theme.text}`} />
-                      </motion.div>
-                      
-                      <div className="flex flex-col gap-2">
-                        <h3 className="text-base font-bold text-slate-800 dark:text-white leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                          {service.title}
-                        </h3>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mt-1">
-                          {service.description.length > 130 ? `${service.description.slice(0, 130)}...` : service.description}
-                        </p>
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={() => setView('services')}
-                      className={`flex items-center gap-1.5 text-xs font-bold ${theme.text} hover:opacity-85 transition-opacity cursor-pointer text-left w-fit mt-2`}
-                    >
-                      <span>Learn more</span>
-                      <ChevronRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform duration-200" />
-                    </button>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        <div className="flex justify-center mt-12">
-          <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ ease: easePreset, duration: 0.2 }}
-            onClick={() => setView('services')}
-            className="flex items-center gap-2 px-6 py-3.5 border border-slate-200 dark:border-slate-800 hover:border-slate-350 dark:hover:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-bold text-xs rounded-xl shadow-sm hover:shadow cursor-pointer"
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.65 }}
+            className="flex flex-col items-center text-center gap-4 mb-16"
           >
-            <span>Explore All Services</span>
-            <ArrowRight className="h-3.5 w-3.5" />
-          </motion.button>
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-indigo-200 dark:border-indigo-800/60 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-widest">
+              <Zap className="h-3.5 w-3.5" />
+              What We Build
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              Our Core Services
+            </h2>
+            <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 max-w-xl leading-relaxed">
+              End-to-end digital solutions engineered for enterprise performance.
+            </p>
+            <div className="h-1 w-16 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 mt-1" />
+          </motion.div>
+
+          {services.length === 0 ? (
+            <div className="py-16 text-center text-slate-500 font-mono text-xs">No service catalog entries matched your active database records.</div>
+          ) : (
+            <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_12%,white_88%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,white_12%,white_88%,transparent)] py-10">
+              <div className="animate-marquee-slow flex gap-6 whitespace-nowrap min-w-max">
+                {[...services, ...services].map((service, index) => {
+                  const theme = serviceThemes[index % serviceThemes.length];
+                  const gradients = [
+                    'from-violet-500/10 to-violet-600/5',
+                    'from-blue-500/10 to-cyan-500/5',
+                    'from-indigo-500/10 to-indigo-600/5',
+                    'from-fuchsia-500/10 to-pink-500/5'
+                  ];
+                  const grad = gradients[index % gradients.length];
+                  return (
+                    <motion.div
+                      key={`srv-${service.id || index}-loop`}
+                      whileHover={{ y: -8, boxShadow: '0 24px 50px -12px rgba(99,102,241,0.18)', borderColor: 'rgba(99,102,241,0.45)', transition: { duration: 0.28 } }}
+                      className="w-[320px] shrink-0 whitespace-normal p-7 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-150 dark:border-slate-800 shadow-sm flex flex-col gap-5 h-[300px] group cursor-pointer backdrop-blur-sm relative overflow-hidden"
+                    >
+                      {/* card inner gradient accent */}
+                      <div className={`absolute inset-0 bg-gradient-to-br ${grad} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl`} />
+
+                      <motion.div
+                        whileHover={{ rotate: 6, scale: 1.08 }}
+                        transition={{ type: 'spring', stiffness: 280, damping: 14 }}
+                        className={`h-13 w-13 rounded-2xl ${theme.bg} flex items-center justify-center shrink-0 shadow-sm`}
+                      >
+                        <RenderIcon name={service.icon} className={`h-6 w-6 ${theme.text}`} />
+                      </motion.div>
+
+                      <div className="flex flex-col gap-2 flex-grow">
+                        <h3 className="text-[15px] font-bold text-slate-800 dark:text-white leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                          {service.title}
+                        </h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                          {service.description.length > 140 ? `${service.description.slice(0, 140)}...` : service.description}
+                        </p>
+                      </div>
+
+                      <button
+                        onClick={() => setView('services')}
+                        className={`flex items-center gap-1.5 text-xs font-bold ${theme.text} w-fit group/btn`}
+                      >
+                        <span>Explore service</span>
+                        <ChevronRight className="h-3.5 w-3.5 transform group-hover/btn:translate-x-1 transition-transform duration-200" />
+                      </button>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          <div className="flex justify-center mt-14">
+            <motion.button
+              whileHover={{ scale: 1.04, boxShadow: '0 8px 25px -5px rgba(99,102,241,0.2)' }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => setView('services')}
+              className="flex items-center gap-2 px-7 py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-indigo-500/20 cursor-pointer transition-all duration-300"
+            >
+              <span>Explore All Services</span>
+              <ArrowRight className="h-4 w-4" />
+            </motion.button>
+          </div>
         </div>
       </section>
 
-      {/* 4. WHY ENTERPRISES CHOOSE US SECTION */}
-      <section className="py-24 bg-slate-950 text-white border-b border-slate-900 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(99,102,241,0.03),transparent)] pointer-events-none" />
-        
+      {/* ═══════════════════════════════════════════════════ */}
+      {/* 4. WHY ENTERPRISES CHOOSE US                       */}
+      {/* ═══════════════════════════════════════════════════ */}
+      <section className="relative py-28 overflow-hidden bg-slate-950">
+        {/* layered bg */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-indigo-950/30 to-slate-950 pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-indigo-600/8 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
+        <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-500/20 to-transparent" />
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-center mb-16 tracking-tight">
-            Why Enterprises Choose Nexus Digital
-          </h2>
-          
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.65 }}
+            className="flex flex-col items-center text-center gap-4 mb-20"
+          >
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-bold uppercase tracking-widest">
+              <Users className="h-3.5 w-3.5" />
+              Our Advantage
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+              Why Enterprises Choose{' '}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-violet-400">Nexus Digital</span>
+            </h2>
+            <div className="h-1 w-16 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 mt-1" />
+          </motion.div>
+
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8"
+            viewport={{ once: true, margin: '-80px' }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6"
           >
             {chooseItems.map((item, idx) => (
               <motion.div
                 key={idx}
                 variants={fadeInUp}
-                className="flex flex-col items-center text-center gap-4 group"
+                whileHover={{ y: -6, borderColor: 'rgba(99,102,241,0.5)', boxShadow: '0 0 30px rgba(99,102,241,0.1)', transition: { duration: 0.3 } }}
+                className="flex flex-col items-center text-center gap-5 p-7 rounded-2xl bg-slate-900/60 border border-slate-800/60 backdrop-blur-sm group cursor-default"
               >
-                <motion.div
-                  whileHover={{ scale: 1.08, rotate: 3 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                  className="h-10 w-10 rounded-xl bg-slate-900 border border-slate-850 flex items-center justify-center group-hover:border-indigo-500 transition-colors duration-300 shadow-sm"
-                >
+                <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-violet-500/10 border border-indigo-500/20 flex items-center justify-center group-hover:border-indigo-400/50 transition-colors duration-300 shadow-lg shadow-indigo-500/5">
                   {item.icon}
-                </motion.div>
-                <div className="flex flex-col gap-1.5">
-                  <h3 className="text-sm font-bold text-slate-100 group-hover:text-indigo-400 transition-colors">{item.title}</h3>
-                  <p className="text-[11px] leading-relaxed text-slate-400 max-w-[200px] mx-auto">
-                    {item.desc}
-                  </p>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <h3 className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors">{item.title}</h3>
+                  <p className="text-[11px] leading-relaxed text-slate-400 max-w-[180px] mx-auto">{item.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -616,72 +599,87 @@ export default function Home({ services, portfolios, testimonials, setView, setS
         </div>
       </section>
 
-      {/* 5. INLINE PORTFOLIO SHOWCASE */}
+      {/* ═══════════════════════════════════════════════════ */}
+      {/* 5. PORTFOLIO SHOWCASE                              */}
+      {/* ═══════════════════════════════════════════════════ */}
       {highlightPortfolios.length > 0 && (
-        <section className="py-24 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-900">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+        <section className="relative py-28 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-white via-slate-50 to-indigo-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950/10 pointer-events-none" />
+          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent" />
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.65 }}
+              className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16"
+            >
               <div className="flex flex-col gap-4 max-w-xl">
-                <span className="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 font-mono">Case Studies</span>
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                  Visual Systems Built For Our Partners
+                <span className="inline-flex items-center gap-2 w-fit px-4 py-1.5 rounded-full border border-indigo-200 dark:border-indigo-800/60 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-widest">
+                  <Trophy className="h-3.5 w-3.5" />
+                  Case Studies
+                </span>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                  Visual Systems Built
+                  <span className="block bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400">For Our Partners</span>
                 </h2>
               </div>
               <button
                 onClick={() => setView('portfolio')}
-                className="flex items-center gap-1.5 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-550 transition-colors cursor-pointer group"
+                className="flex items-center gap-1.5 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors cursor-pointer group shrink-0"
               >
                 <span>View Full Portfolio</span>
                 <ArrowRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
               </button>
-            </div>
+            </motion.div>
 
             <motion.div
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-85px" }}
+              viewport={{ once: true, margin: '-85px' }}
               className="grid grid-cols-1 md:grid-cols-3 gap-8"
             >
               {highlightPortfolios.map((project, idx) => (
                 <motion.div
                   key={idx}
                   variants={fadeInUp}
-                  whileHover={{ y: -6, transition: { duration: 0.3, ease: easePreset } }}
+                  whileHover={{ y: -8, boxShadow: '0 28px 60px -15px rgba(99,102,241,0.2)', borderColor: 'rgba(99,102,241,0.4)', transition: { duration: 0.3 } }}
                   onClick={() => setSelectedProject(project)}
-                  className="rounded-2xl border border-slate-200 dark:border-slate-900 bg-slate-50 dark:bg-slate-900 overflow-hidden cursor-pointer shadow-sm hover:shadow-lg dark:hover:border-slate-800 transition-all duration-300 flex flex-col group"
+                  className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden cursor-pointer shadow-md transition-all duration-300 flex flex-col group"
                 >
-                  <div className="aspect-video w-full overflow-hidden relative bg-slate-100">
+                  <div className="aspect-video w-full overflow-hidden relative bg-slate-100 dark:bg-slate-800">
                     <img
                       src={project.image}
                       alt={project.title}
-                      className="h-full w-full object-cover group-hover:scale-104 transition-transform duration-500"
+                      className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700"
                       referrerPolicy="no-referrer"
                     />
-                    <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-white/95 text-slate-900 shadow-sm border border-slate-100">
+                    {/* gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                    <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-indigo-600/90 text-white shadow-sm backdrop-blur-sm">
                       {project.category}
                     </span>
                   </div>
-                  <div className="p-6 flex flex-col gap-3 flex-grow">
-                    <span className="text-[10px] font-mono uppercase text-slate-400 dark:text-slate-500">
-                      Client: {project.client}
+                  <div className="p-7 flex flex-col gap-3 flex-grow">
+                    <span className="text-[10px] font-mono uppercase text-slate-400 dark:text-slate-500 tracking-wider">
+                      Client · {project.client}
                     </span>
-                    <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                    <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors leading-snug">
                       {project.title}
                     </h3>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed flex-grow">
-                      {project.description.slice(0, 110)}...
+                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed flex-grow">
+                      {project.description.slice(0, 115)}...
                     </p>
-                    <div className="flex flex-wrap gap-1.5 pt-2">
+                    <div className="flex flex-wrap gap-1.5 pt-3 border-t border-slate-100 dark:border-slate-800">
                       {project.technologies.slice(0, 3).map((tech, i) => (
-                        <span key={i} className="px-2.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-[10px] text-slate-500 dark:text-slate-400 border border-slate-200/40 dark:border-slate-700/40 font-semibold">
+                        <span key={i} className="px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 text-[10px] text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-800/50 font-semibold">
                           {tech}
                         </span>
                       ))}
                       {project.technologies.length > 3 && (
-                        <span className="text-[10px] text-slate-400 self-center font-mono">
-                          +{project.technologies.length - 3}
-                        </span>
+                        <span className="text-[10px] text-slate-400 self-center font-mono">+{project.technologies.length - 3} more</span>
                       )}
                     </div>
                   </div>
@@ -692,184 +690,196 @@ export default function Home({ services, portfolios, testimonials, setView, setS
         </section>
       )}
 
-      {/* 6. CLIENT TESTIMONIALS */}
+      {/* ═══════════════════════════════════════════════════ */}
+      {/* 6. CLIENT TESTIMONIALS                             */}
+      {/* ═══════════════════════════════════════════════════ */}
       {testimonials.length > 0 && (
-        <section className="py-24 bg-slate-50 dark:bg-slate-950/20 border-b border-slate-200 dark:border-slate-900">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col gap-4 text-center max-w-2xl mx-auto mb-16">
-              <span className="text-xs font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 font-mono">Earning Trust</span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                Recommended By Elite Technology Directors
+        <section className="relative py-28 overflow-hidden bg-slate-950">
+          {/* Dark premium bg */}
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-indigo-950/20 to-slate-950 pointer-events-none" />
+          <div className="absolute top-1/3 left-1/4 w-[500px] h-[300px] bg-indigo-600/8 rounded-full blur-[100px] pointer-events-none" />
+          <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[250px] bg-violet-600/8 rounded-full blur-[90px] pointer-events-none" />
+          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
+          <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-500/20 to-transparent" />
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.65 }}
+              className="flex flex-col gap-4 text-center max-w-2xl mx-auto mb-20"
+            >
+              <span className="inline-flex items-center gap-2 mx-auto px-4 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 text-xs font-bold uppercase tracking-widest">
+                <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                Client Reviews
+              </span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+                Recommended By
+                <span className="block bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-violet-400"> Elite Technology Directors</span>
               </h2>
-            </div>
+              <div className="h-1 w-16 rounded-full bg-gradient-to-r from-amber-400 to-orange-400 mx-auto mt-1" />
+            </motion.div>
 
-            <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_15%,white_85%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,white_15%,white_85%,transparent)] py-6">
-              <div className="animate-marquee-left flex gap-8 whitespace-nowrap min-w-max">
-                {/* Loop 1 */}
-                {firstRowTestimonials.map((test, index) => (
-                  <div
-                    key={`test-r1-g1-${index}`}
-                    className="w-[440px] shrink-0 whitespace-normal bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-800/80 p-8 rounded-2xl shadow-sm flex flex-col justify-between h-[220px] group transition-all duration-300"
-                  >
-                    <div className="flex flex-col gap-4">
-                      <div className="flex items-center gap-1">
-                        {[...Array(test.rating)].map((_, i) => (
-                          <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
-                        ))}
-                      </div>
-                      <p className="text-xs sm:text-sm italic leading-relaxed text-slate-650 dark:text-slate-350 line-clamp-3">
-                        &ldquo;{test.quote}&rdquo;
-                      </p>
-                    </div>
-                    
-                    <div className="flex items-center gap-4 pt-4 border-t border-slate-100 dark:border-slate-800/60 mt-auto">
-                      <img
-                        src={test.avatar}
-                        alt={test.name}
-                        className="h-10 w-10 rounded-full object-cover shrink-0"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="flex flex-col leading-tight">
-                        <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">{test.name}</span>
-                        <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5">
-                          {test.role} at <span className="text-slate-800 dark:text-slate-205 font-bold">{test.company}</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                {/* Loop 2 (Duplicate) */}
-                {firstRowTestimonials.map((test, index) => (
-                  <div
-                    key={`test-r1-g2-${index}`}
-                    className="w-[440px] shrink-0 whitespace-normal bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-800/80 p-8 rounded-2xl shadow-sm flex flex-col justify-between h-[220px] group transition-all duration-300"
-                  >
-                    <div className="flex flex-col gap-4">
-                      <div className="flex items-center gap-1">
-                        {[...Array(test.rating)].map((_, i) => (
-                          <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
-                        ))}
-                      </div>
-                      <p className="text-xs sm:text-sm italic leading-relaxed text-slate-650 dark:text-slate-350 line-clamp-3">
-                        &ldquo;{test.quote}&rdquo;
-                      </p>
-                    </div>
-                    
-                    <div className="flex items-center gap-4 pt-4 border-t border-slate-100 dark:border-slate-800/60 mt-auto">
-                      <img
-                        src={test.avatar}
-                        alt={test.name}
-                        className="h-10 w-10 rounded-full object-cover shrink-0"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="flex flex-col leading-tight">
-                        <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">{test.name}</span>
-                        <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5">
-                          {test.role} at <span className="text-slate-800 dark:text-slate-205 font-bold">{test.company}</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {showTwoRows && (
-              <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_15%,white_85%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,white_15%,white_85%,transparent)] py-6 mt-4">
-                <div className="animate-marquee-right flex gap-8 whitespace-nowrap min-w-max">
-                  {/* Loop 1 */}
-                  {secondRowTestimonials.map((test, index) => (
+            {/* Testimonial marquee rows */}
+            {[firstRowTestimonials, secondRowTestimonials].filter(row => row.length > 0).map((row, rowIdx) => (
+              <div key={rowIdx} className={`relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_12%,white_88%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,white_12%,white_88%,transparent)] py-4 ${rowIdx > 0 ? 'mt-4' : ''}`}>
+                <div className={`${rowIdx % 2 === 0 ? 'animate-marquee-left' : 'animate-marquee-slow'} flex gap-6 whitespace-nowrap min-w-max`}>
+                  {[...row, ...row].map((test, index) => (
                     <div
-                      key={`test-r2-g1-${index}`}
-                      className="w-[440px] shrink-0 whitespace-normal bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-800/80 p-8 rounded-2xl shadow-sm flex flex-col justify-between h-[220px] group transition-all duration-300"
+                      key={`test-r${rowIdx}-${index}`}
+                      className="w-[420px] shrink-0 whitespace-normal bg-slate-900/70 border border-slate-700/50 backdrop-blur-sm p-7 rounded-2xl flex flex-col justify-between h-[210px] group hover:border-indigo-500/40 transition-all duration-300"
                     >
-                      <div className="flex flex-col gap-4">
-                        <div className="flex items-center gap-1">
+                      <div className="flex flex-col gap-3">
+                        <div className="flex items-center gap-0.5">
                           {[...Array(test.rating)].map((_, i) => (
-                            <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
+                            <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400 drop-shadow-[0_0_4px_rgba(251,191,36,0.5)]" />
                           ))}
                         </div>
-                        <p className="text-xs sm:text-sm italic leading-relaxed text-slate-650 dark:text-slate-350 line-clamp-3">
+                        <p className="text-xs sm:text-sm leading-relaxed text-slate-300 line-clamp-3 italic">
                           &ldquo;{test.quote}&rdquo;
                         </p>
                       </div>
-                      
-                      <div className="flex items-center gap-4 pt-4 border-t border-slate-100 dark:border-slate-800/60 mt-auto">
-                        <img
-                          src={test.avatar}
-                          alt={test.name}
-                          className="h-10 w-10 rounded-full object-cover shrink-0"
-                          referrerPolicy="no-referrer"
-                        />
+                      <div className="flex items-center gap-3 pt-4 border-t border-slate-700/50 mt-auto">
+                        <img src={test.avatar} alt={test.name} className="h-9 w-9 rounded-full object-cover shrink-0 ring-2 ring-indigo-500/30" referrerPolicy="no-referrer" />
                         <div className="flex flex-col leading-tight">
-                          <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">{test.name}</span>
-                          <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5">
-                            {test.role} at <span className="text-slate-800 dark:text-slate-205 font-bold">{test.company}</span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  {/* Loop 2 (Duplicate) */}
-                  {secondRowTestimonials.map((test, index) => (
-                    <div
-                      key={`test-r2-g2-${index}`}
-                      className="w-[440px] shrink-0 whitespace-normal bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-800/80 p-8 rounded-2xl shadow-sm flex flex-col justify-between h-[220px] group transition-all duration-300"
-                    >
-                      <div className="flex flex-col gap-4">
-                        <div className="flex items-center gap-1">
-                          {[...Array(test.rating)].map((_, i) => (
-                            <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
-                          ))}
-                        </div>
-                        <p className="text-xs sm:text-sm italic leading-relaxed text-slate-650 dark:text-slate-350 line-clamp-3">
-                          &ldquo;{test.quote}&rdquo;
-                        </p>
-                      </div>
-                      
-                      <div className="flex items-center gap-4 pt-4 border-t border-slate-100 dark:border-slate-800/60 mt-auto">
-                        <img
-                          src={test.avatar}
-                          alt={test.name}
-                          className="h-10 w-10 rounded-full object-cover shrink-0"
-                          referrerPolicy="no-referrer"
-                        />
-                        <div className="flex flex-col leading-tight">
-                          <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">{test.name}</span>
-                          <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5">
-                            {test.role} at <span className="text-slate-800 dark:text-slate-205 font-bold">{test.company}</span>
-                          </span>
+                          <span className="text-xs font-bold text-white">{test.name}</span>
+                          <span className="text-[10px] text-slate-400 mt-0.5">{test.role} · <span className="text-indigo-400 font-semibold">{test.company}</span></span>
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
-            )}
+            ))}
+
           </div>
         </section>
       )}
 
-      {/* 7. BOTTOM CTA BANNER (With subtle button pulse visual cue) */}
-      <section className="py-20 bg-indigo-600 dark:bg-indigo-900 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_right,rgba(255,255,255,0.08),transparent)] pointer-events-none" />
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center flex flex-col items-center gap-8">
-          <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight leading-tight">
-            Ready To Design Your Operational Infrastructure?
-          </h2>
-          <p className="text-indigo-100 text-base sm:text-lg max-w-2xl leading-relaxed">
-            Get in touch with us to draft custom blueprints, verify integrations, and run detailed architectural discovery loops for your digital software models.
-          </p>
-          <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ ease: easePreset, duration: 0.2 }}
-            onClick={() => setView('contact')}
-            className="px-8 py-4 bg-white text-indigo-600 font-bold hover:bg-indigo-50 rounded-xl shadow-lg transition-all duration-300 cursor-pointer flex items-center gap-2 group"
+      {/* 7. BOTTOM CTA BANNER — Premium gradient finish */}
+      <section className="relative py-24 overflow-hidden">
+
+        {/* === LAYERED GRADIENT BACKGROUND === */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-violet-950 to-slate-950" />
+
+        {/* Mesh / noise texture overlay */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
+          backgroundSize: '200px 200px'
+        }} />
+
+        {/* Glowing orb — top left */}
+        <motion.div
+          animate={{ scale: [1, 1.15, 1], opacity: [0.25, 0.4, 0.25] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-indigo-600/30 blur-[100px] pointer-events-none"
+        />
+
+        {/* Glowing orb — bottom right */}
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.35, 0.2] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute -bottom-32 -right-24 w-[450px] h-[450px] rounded-full bg-violet-600/25 blur-[90px] pointer-events-none"
+        />
+
+        {/* Glowing orb — center top */}
+        <motion.div
+          animate={{ y: [0, -20, 0], opacity: [0.15, 0.28, 0.15] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] rounded-full bg-purple-500/20 blur-[80px] pointer-events-none"
+        />
+
+        {/* Shimmer top border line */}
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent" />
+        {/* Shimmer bottom border line */}
+        <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-400/30 to-transparent" />
+
+        {/* === CONTENT === */}
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center flex flex-col items-center gap-8">
+
+          {/* Badge pill */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-indigo-400/30 bg-indigo-400/10 text-indigo-300 text-xs font-bold uppercase tracking-widest backdrop-blur-sm"
           >
-            <span>Request Consult Call</span>
-            <ArrowRight className="h-4.5 w-4.5 transform group-hover:translate-x-1 transition-transform" />
-          </motion.button>
+            <Atom className="h-3.5 w-3.5 animate-spin" style={{ animationDuration: '6s' }} />
+            Start Your Project Today
+          </motion.div>
+
+          {/* Heading */}
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.65, delay: 0.1 }}
+            className="text-3xl sm:text-4xl lg:text-[46px] font-extrabold tracking-tight leading-[1.1] text-white"
+          >
+            Ready To Design Your{' '}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-violet-300 to-purple-300">
+              Operational Infrastructure?
+            </span>
+          </motion.h2>
+
+          {/* Subtext */}
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.65, delay: 0.2 }}
+            className="text-slate-300 text-base sm:text-lg max-w-2xl leading-relaxed"
+          >
+            Get in touch with us to draft custom blueprints, verify integrations, and run detailed
+            architectural discovery loops for your digital software models.
+          </motion.p>
+
+          {/* CTA buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.65, delay: 0.3 }}
+            className="flex flex-wrap gap-4 justify-center mt-2"
+          >
+            {/* Primary */}
+            <motion.button
+              whileHover={{ scale: 1.04, boxShadow: '0 0 32px rgba(99,102,241,0.5)' }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setView('contact')}
+              className="flex items-center gap-2.5 px-8 py-4 bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-400 hover:to-violet-400 text-white font-bold rounded-xl shadow-lg shadow-indigo-500/30 cursor-pointer group transition-all duration-300"
+            >
+              <span>Request Consult Call</span>
+              <ArrowRight className="h-4.5 w-4.5 transform group-hover:translate-x-1 transition-transform" />
+            </motion.button>
+
+            {/* Secondary ghost */}
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setView('portfolio')}
+              className="flex items-center gap-2.5 px-8 py-4 border border-white/20 bg-white/5 hover:bg-white/10 backdrop-blur-sm text-white font-bold rounded-xl cursor-pointer transition-all duration-300"
+            >
+              <span>View Case Studies</span>
+              <ChevronRight className="h-4.5 w-4.5" />
+            </motion.button>
+          </motion.div>
+
+          {/* Trust micro-line */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.45 }}
+            className="text-xs text-slate-500 mt-2"
+          >
+            No commitment required · Free discovery call · Response within 24 hrs
+          </motion.p>
+
         </div>
       </section>
 
