@@ -1,0 +1,181 @@
+{
+  "entities": {
+    "Service": {
+      "title": "Service",
+      "description": "Details about a digital service offered by the agency",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "benefits": { "type": "array" },
+        "technologies": { "type": "array" },
+        "icon": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "description", "benefits", "technologies", "icon", "createdAt", "updatedAt"]
+    },
+    "Portfolio": {
+      "title": "Portfolio",
+      "description": "Details about a completed client or agency project",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "technologies": { "type": "array" },
+        "image": { "type": "string" },
+        "client": { "type": "string" },
+        "link": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "description", "category", "technologies", "image", "client", "createdAt", "updatedAt"]
+    },
+    "Blog": {
+      "title": "Blog",
+      "description": "An educational article or blog post written by the agency staff",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "summary": { "type": "string" },
+        "category": { "type": "string" },
+        "image": { "type": "string" },
+        "readTime": { "type": "string" },
+        "author": { "type": "string" },
+        "publishedAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "content", "summary", "category", "image", "readTime", "author", "publishedAt", "createdAt", "updatedAt"]
+    },
+    "Testimonial": {
+      "title": "Testimonial",
+      "description": "Feedback and rating from a satisfied business partner or client",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "company": { "type": "string" },
+        "quote": { "type": "string" },
+        "rating": { "type": "number" },
+        "avatar": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "role", "company", "quote", "rating", "avatar", "createdAt", "updatedAt"]
+    },
+    "Faq": {
+      "title": "Faq",
+      "description": "Frequently asked question and corresponding answer",
+      "type": "object",
+      "properties": {
+        "question": { "type": "string" },
+        "answer": { "type": "string" },
+        "category": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["question", "answer", "category", "createdAt", "updatedAt"]
+    },
+    "Career": {
+      "title": "Career",
+      "description": "Open career vacancy for hiring developers, designers, or marketers",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "department": { "type": "string" },
+        "location": { "type": "string" },
+        "type": { "type": "string" },
+        "description": { "type": "string" },
+        "requirements": { "type": "array" },
+        "benefits": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "department", "location", "type", "description", "requirements", "benefits", "createdAt", "updatedAt"]
+    },
+    "ContactMessage": {
+      "title": "ContactMessage",
+      "description": "Visitor-submitted contact / business inquiry form data",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "service": { "type": "string" },
+        "message": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "phone", "service", "message", "status", "createdAt"]
+    },
+    "Setting": {
+      "title": "Setting",
+      "description": "Global website configuration, contact information, social handles, and SEO meta",
+      "type": "object",
+      "properties": {
+        "companyName": { "type": "string" },
+        "logoUrl": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "address": { "type": "string" },
+        "socialLinks": { "type": "object" },
+        "seoTitle": { "type": "string" },
+        "seoDescription": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["companyName", "logoUrl", "email", "phone", "address", "socialLinks", "seoTitle", "seoDescription", "updatedAt"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Pre-authorized administrator whitelist registered by user UID",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "role": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "role", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/services/{serviceId}": {
+      "schema": "Service",
+      "description": "Collection of business services provided by the agency"
+    },
+    "/portfolio/{projectId}": {
+      "schema": "Portfolio",
+      "description": "Collection of visual client projects and apps built"
+    },
+    "/blog/{articleId}": {
+      "schema": "Blog",
+      "description": "Collection of corporate strategy, engineering, and tech blogs"
+    },
+    "/testimonials/{testimonialId}": {
+      "schema": "Testimonial",
+      "description": "Collection of verified client recommendation testimonials"
+    },
+    "/faqs/{faqId}": {
+      "schema": "Faq",
+      "description": "Collection of searchable FAQ Q&As"
+    },
+    "/careers/{careerId}": {
+      "schema": "Career",
+      "description": "Collection of open career positions"
+    },
+    "/contactMessages/{messageId}": {
+      "schema": "ContactMessage",
+      "description": "Collection of client digital development/strategy inquiries and leads"
+    },
+    "/settings/{settingId}": {
+      "schema": "Setting",
+      "description": "Collection containing singular or multiple dynamic settings config documents"
+    },
+    "/admins/{adminUid}": {
+      "schema": "Admin",
+      "description": "Admin whitelist mapped direct from Auth UID to prevent illegal privilege escalation"
+    }
+  }
+}

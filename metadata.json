@@ -1,0 +1,6 @@
+{
+  "name": "Digital Agency Portal",
+  "description": "An administrative console and client platform for a high-scale digital agency with services, portfolio, blog, testimonials, FAQs, and web configurations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

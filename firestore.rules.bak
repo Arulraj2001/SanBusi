@@ -1,0 +1,183 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- GLOBAL HELPER FUNCTIONS ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isEmailVerified() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isDeveloper() {
+      return isSignedIn() && request.auth.token.email == "samuelarul2001@gmail.com";
+    }
+
+    function isAdmin() {
+      return isEmailVerified() && (
+        isDeveloper() ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_-]+$');
+    }
+
+    // --- ENTITY SCHEMA VALIDATION HELPERS ---
+    function isValidService(data) {
+      return data.title is string && data.title.size() <= 200 &&
+             data.description is string && data.description.size() <= 4000 &&
+             data.icon is string && data.icon.size() <= 100 &&
+             data.benefits is list && data.benefits.size() <= 20 &&
+             data.technologies is list && data.technologies.size() <= 20;
+    }
+
+    function isValidPortfolio(data) {
+      return data.title is string && data.title.size() <= 200 &&
+             data.description is string && data.description.size() <= 4000 &&
+             data.category is string && data.category.size() <= 100 &&
+             data.image is string && data.image.size() <= 1000000 &&
+             data.client is string && data.client.size() <= 100 &&
+             data.technologies is list && data.technologies.size() <= 20;
+    }
+
+    function isValidBlog(data) {
+      return data.title is string && data.title.size() <= 200 &&
+             data.content is string && data.content.size() <= 200000 &&
+             data.summary is string && data.summary.size() <= 1000 &&
+             data.category is string && data.category.size() <= 100 &&
+             data.image is string && data.image.size() <= 1000000 &&
+             data.readTime is string && data.readTime.size() <= 50 &&
+             data.author is string && data.author.size() <= 100;
+    }
+
+    function isValidTestimonial(data) {
+      return data.name is string && data.name.size() <= 100 &&
+             data.role is string && data.role.size() <= 100 &&
+             data.company is string && data.company.size() <= 100 &&
+             data.quote is string && data.quote.size() <= 2000 &&
+             (data.rating is int || data.rating is float) && data.rating >= 1 && data.rating <= 5 &&
+             data.avatar is string && data.avatar.size() <= 1000000;
+    }
+
+    function isValidFaq(data) {
+      return data.question is string && data.question.size() <= 1000 &&
+             data.answer is string && data.answer.size() <= 4000 &&
+             data.category is string && data.category.size() <= 100;
+    }
+
+    function isValidCareer(data) {
+      return data.title is string && data.title.size() <= 200 &&
+             data.department is string && data.department.size() <= 100 &&
+             data.location is string && data.location.size() <= 100 &&
+             data.type is string && data.type.size() <= 100 &&
+             data.description is string && data.description.size() <= 4000 &&
+             data.requirements is list && data.requirements.size() <= 20 &&
+             data.benefits is list && data.benefits.size() <= 20;
+    }
+
+    function isValidContactMessage(data) {
+      return data.name is string && data.name.size() <= 100 &&
+             data.email is string && data.email.size() <= 150 &&
+             data.phone is string && data.phone.size() <= 50 &&
+             data.service is string && data.service.size() <= 100 &&
+             data.message is string && data.message.size() <= 4000 &&
+             data.status is string && (data.status == "unread" || data.status == "read");
+    }
+
+    function isValidSetting(data) {
+      return data.companyName is string && data.companyName.size() <= 200 &&
+             data.logoUrl is string && data.logoUrl.size() <= 1000000 &&
+             data.email is string && data.email.size() <= 150 &&
+             data.phone is string && data.phone.size() <= 50 &&
+             data.address is string && data.address.size() <= 500 &&
+             data.seoTitle is string && data.seoTitle.size() <= 200 &&
+             data.seoDescription is string && data.seoDescription.size() <= 1000;
+    }
+
+    // --- MATCH BLOCKS ---
+
+    // 1. Services Collection
+    match /services/{serviceId} {
+      allow read, list: if true;
+      allow create: if isAdmin() && isValidId(serviceId) && isValidService(incoming()) && incoming().createdAt == request.time && incoming().updatedAt == request.time;
+      allow update: if isAdmin() && isValidId(serviceId) && isValidService(incoming()) && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time;
+      allow delete: if isAdmin() && isValidId(serviceId);
+    }
+
+    // 2. Portfolio Collection
+    match /portfolio/{projectId} {
+      allow read, list: if true;
+      allow create: if isAdmin() && isValidId(projectId) && isValidPortfolio(incoming()) && incoming().createdAt == request.time && incoming().updatedAt == request.time;
+      allow update: if isAdmin() && isValidId(projectId) && isValidPortfolio(incoming()) && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time;
+      allow delete: if isAdmin() && isValidId(projectId);
+    }
+
+    // 3. Blog Collection
+    match /blog/{articleId} {
+      allow read, list: if true;
+      allow create: if isAdmin() && isValidId(articleId) && isValidBlog(incoming()) && incoming().createdAt == request.time && incoming().updatedAt == request.time;
+      allow update: if isAdmin() && isValidId(articleId) && isValidBlog(incoming()) && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time;
+      allow delete: if isAdmin() && isValidId(articleId);
+    }
+
+    // 4. Testimonials Collection
+    match /testimonials/{testimonialId} {
+      allow read, list: if true;
+      allow create: if isAdmin() && isValidId(testimonialId) && isValidTestimonial(incoming()) && incoming().createdAt == request.time && incoming().updatedAt == request.time;
+      allow update: if isAdmin() && isValidId(testimonialId) && isValidTestimonial(incoming()) && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time;
+      allow delete: if isAdmin() && isValidId(testimonialId);
+    }
+
+    // 5. FAQs Collection
+    match /faqs/{faqId} {
+      allow read, list: if true;
+      allow create: if isAdmin() && isValidId(faqId) && isValidFaq(incoming()) && incoming().createdAt == request.time && incoming().updatedAt == request.time;
+      allow update: if isAdmin() && isValidId(faqId) && isValidFaq(incoming()) && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time;
+      allow delete: if isAdmin() && isValidId(faqId);
+    }
+
+    // 6. Careers Collection
+    match /careers/{careerId} {
+      allow read, list: if true;
+      allow create: if isAdmin() && isValidId(careerId) && isValidCareer(incoming()) && incoming().createdAt == request.time && incoming().updatedAt == request.time;
+      allow update: if isAdmin() && isValidId(careerId) && isValidCareer(incoming()) && incoming().createdAt == existing().createdAt && incoming().updatedAt == request.time;
+      allow delete: if isAdmin() && isValidId(careerId);
+    }
+
+    // 7. Contact Messages Collection (Leads)
+    match /contactMessages/{messageId} {
+      allow create: if isValidId(messageId) && isValidContactMessage(incoming()) && incoming().createdAt == request.time;
+      allow read, list, update, delete: if isAdmin() && isValidId(messageId);
+    }
+
+    // 8. Settings Collection
+    match /settings/{settingId} {
+      allow read, list: if true;
+      allow create: if isAdmin() && isValidId(settingId) && isValidSetting(incoming()) && incoming().updatedAt == request.time;
+      allow update: if isAdmin() && isValidId(settingId) && isValidSetting(incoming()) && incoming().updatedAt == request.time;
+      allow delete: if isAdmin() && isValidId(settingId);
+    }
+
+    // 9. Admins Collection Whitelist
+    match /admins/{adminUid} {
+      allow read, write: if isAdmin() && isValidId(adminUid);
+    }
+  }
+}
