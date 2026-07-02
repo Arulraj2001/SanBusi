@@ -478,7 +478,7 @@ export default function Home({ services, portfolios, testimonials, setView, setS
                   const grad = gradients[index % gradients.length];
                   return (
                     <motion.div
-                      key={`srv-${service.id || index}-loop`}
+                      key={`srv-${service.id || index}-loop-${index}`}
                       whileHover={{ y: -8, boxShadow: '0 24px 50px -12px rgba(99,102,241,0.18)', borderColor: 'rgba(99,102,241,0.45)', transition: { duration: 0.28 } }}
                       className="w-[320px] shrink-0 whitespace-normal p-7 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-150 dark:border-slate-800 shadow-sm flex flex-col gap-5 h-[300px] group cursor-pointer backdrop-blur-sm relative overflow-hidden"
                     >
