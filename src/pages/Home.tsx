@@ -28,6 +28,10 @@ export default function Home({ services, portfolios, testimonials, setView, setS
   const firstRowTestimonials = showTwoRows ? testimonials.filter((_, idx) => idx % 2 === 0) : testimonials;
   const secondRowTestimonials = showTwoRows ? testimonials.filter((_, idx) => idx % 2 === 1) : [];
 
+  // True when any hero background media (video or image) is set from admin
+  const hasHeroBg = !!(settings?.homeVideoUrl || settings?.homeImageUrl);
+
+
   const chooseItems = [
     { icon: <Shield className="h-5 w-5 text-indigo-400" />, title: "Business-Focused", desc: "We align technology with your business goals and ROI." },
     { icon: <Zap className="h-5 w-5 text-indigo-400" />, title: "Agile & Fast Delivery", desc: "Iterative development for faster time-to-market." },
@@ -129,10 +133,10 @@ export default function Home({ services, portfolios, testimonials, setView, setS
       
       {/* 1. HERO SECTION */}
       <section className={`relative overflow-hidden py-24 lg:py-32 border-b border-slate-150 dark:border-slate-900 flex items-center min-h-[85vh] ${
-        settings?.homeVideoUrl ? 'bg-slate-950' : 'bg-white dark:bg-slate-950'
+        hasHeroBg ? 'bg-slate-950' : 'bg-white dark:bg-slate-950'
       }`}>
         
-        {/* Background media loop with admin-controlled opacity */}
+        {/* Background media — video takes priority, then image, both admin-controlled */}
         {settings?.homeVideoUrl ? (
           <video
             key={settings.homeVideoUrl}
@@ -144,15 +148,15 @@ export default function Home({ services, portfolios, testimonials, setView, setS
             className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
             style={{ opacity: settings.homeVideoOpacity ?? 0.12 }}
           />
-        ) : (
+        ) : settings?.homeImageUrl ? (
           <div
             className="absolute inset-0 w-full h-full bg-cover bg-center pointer-events-none z-0"
             style={{
-              backgroundImage: `url(${settings?.homeImageUrl || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80"})`,
-              opacity: settings?.homeVideoOpacity ?? 0.12
+              backgroundImage: `url(${settings.homeImageUrl})`,
+              opacity: settings.homeVideoOpacity ?? 0.12
             }}
           />
-        )}
+        ) : null}
 
         {/* Subtle moving background glow */}
         <motion.div
@@ -182,7 +186,7 @@ export default function Home({ services, portfolios, testimonials, setView, setS
               <motion.div
                 variants={fadeInUp}
                 className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-bold uppercase tracking-wider select-none ${
-                  settings?.homeVideoUrl
+                  hasHeroBg
                     ? 'bg-indigo-500/20 border-indigo-400/30 text-indigo-300'
                     : 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-100/50 dark:border-indigo-900/30 text-indigo-600 dark:text-indigo-400'
                 }`}
@@ -195,7 +199,7 @@ export default function Home({ services, portfolios, testimonials, setView, setS
               <motion.h1
                 variants={fadeInUp}
                 className={`text-4xl sm:text-5xl lg:text-[54px] font-extrabold tracking-tight leading-[1.12] ${
-                  settings?.homeVideoUrl ? 'text-white' : 'text-slate-900 dark:text-white'
+                  hasHeroBg ? 'text-white' : 'text-slate-900 dark:text-white'
                 }`}
               >
                 We Build Enterprise<br />
@@ -207,7 +211,7 @@ export default function Home({ services, portfolios, testimonials, setView, setS
               <motion.p
                 variants={fadeInUp}
                 className={`text-base sm:text-lg leading-relaxed max-w-xl ${
-                  settings?.homeVideoUrl ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'
+                  hasHeroBg ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'
                 }`}
               >
                 Nexus Digital helps enterprises design, build, and scale custom software, cloud infrastructure, e-commerce platforms, and AI-powered automation systems with reliable engineering and measurable outcomes.
@@ -234,7 +238,7 @@ export default function Home({ services, portfolios, testimonials, setView, setS
                   variants={scaleHover}
                   onClick={() => setView('portfolio')}
                   className={`w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 font-bold rounded-xl shadow-sm cursor-pointer border transition-colors ${
-                    settings?.homeVideoUrl
+                    hasHeroBg
                       ? 'border-white/20 bg-white/10 hover:bg-white/15 text-white backdrop-blur-sm'
                       : 'border-slate-200 dark:border-slate-800 hover:border-slate-350 dark:hover:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300'
                   }`}
@@ -264,15 +268,15 @@ export default function Home({ services, portfolios, testimonials, setView, setS
                   ease: "easeInOut"
                 }}
                 className={`w-full max-w-[460px] p-6 sm:p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 relative z-10 ${
-                  settings?.homeVideoUrl
+                  hasHeroBg
                     ? 'bg-white/10 backdrop-blur-md border border-white/15'
                     : 'bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-850'
                 }`}
               >
                 {/* Header */}
-                <div className={`flex items-center gap-2.5 pb-5 mb-6 border-b ${ settings?.homeVideoUrl ? 'border-white/15' : 'border-slate-100 dark:border-slate-800' }`}>
+                <div className={`flex items-center gap-2.5 pb-5 mb-6 border-b ${ hasHeroBg ? 'border-white/15' : 'border-slate-100 dark:border-slate-800' }`}>
                   <BarChart2 className="h-5 w-5 text-indigo-400 shrink-0" />
-                  <span className={`font-bold text-sm ${ settings?.homeVideoUrl ? 'text-white' : 'text-slate-800 dark:text-slate-200' }`}>Nexus Delivery Framework</span>
+                  <span className={`font-bold text-sm ${ hasHeroBg ? 'text-white' : 'text-slate-800 dark:text-slate-200' }`}>Nexus Delivery Framework</span>
                 </div>
 
                 {/* 2x2 Feature Grid */}
@@ -284,19 +288,19 @@ export default function Home({ services, portfolios, testimonials, setView, setS
                     { icon: <ShoppingCart className="h-5 w-5 text-fuchsia-400" />, iconBg: 'bg-fuchsia-500/20', title: 'E-commerce Systems', desc: 'High-performance stores, payment flows and admin dashboards.' }
                   ].map((item, i) => (
                     <div key={i} className="flex flex-col gap-3">
-                      <div className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 ${ settings?.homeVideoUrl ? item.iconBg : 'bg-slate-100 dark:bg-slate-800' }`}>
+                      <div className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 ${ hasHeroBg ? item.iconBg : 'bg-slate-100 dark:bg-slate-800' }`}>
                         {item.icon}
                       </div>
                       <div>
-                        <h4 className={`text-xs sm:text-sm font-bold ${ settings?.homeVideoUrl ? 'text-white' : 'text-slate-800 dark:text-white' }`}>{item.title}</h4>
-                        <p className={`text-[11px] sm:text-xs leading-normal mt-1 ${ settings?.homeVideoUrl ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400' }`}>{item.desc}</p>
+                        <h4 className={`text-xs sm:text-sm font-bold ${ hasHeroBg ? 'text-white' : 'text-slate-800 dark:text-white' }`}>{item.title}</h4>
+                        <p className={`text-[11px] sm:text-xs leading-normal mt-1 ${ hasHeroBg ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400' }`}>{item.desc}</p>
                       </div>
                     </div>
                   ))}
                 </div>
 
                 {/* Card Stats Footer */}
-                <div className={`grid grid-cols-3 gap-2 pt-6 border-t ${ settings?.homeVideoUrl ? 'border-white/15' : 'border-slate-100 dark:border-slate-800' }`}>
+                <div className={`grid grid-cols-3 gap-2 pt-6 border-t ${ hasHeroBg ? 'border-white/15' : 'border-slate-100 dark:border-slate-800' }`}>
                   {[{ icon: <Trophy className="h-4.5 w-4.5 text-indigo-400 shrink-0" />, val: '40+', lbl: 'Delivered' },
                     { icon: <ShieldCheck className="h-4.5 w-4.5 text-indigo-400 shrink-0" />, val: '99.9%', lbl: 'Uptime' },
                     { icon: <Smile className="h-4.5 w-4.5 text-indigo-400 shrink-0" />, val: '35+', lbl: 'Clients' }
@@ -304,8 +308,8 @@ export default function Home({ services, portfolios, testimonials, setView, setS
                     <div key={i} className="flex items-center gap-2">
                       {s.icon}
                       <div className="flex flex-col leading-none">
-                        <span className={`text-sm font-extrabold ${ settings?.homeVideoUrl ? 'text-white' : 'text-slate-800 dark:text-white' }`}>{s.val}</span>
-                        <span className={`text-[9px] uppercase mt-0.5 tracking-wider font-mono ${ settings?.homeVideoUrl ? 'text-slate-400' : 'text-slate-400' }`}>{s.lbl}</span>
+                        <span className={`text-sm font-extrabold ${ hasHeroBg ? 'text-white' : 'text-slate-800 dark:text-white' }`}>{s.val}</span>
+                        <span className={`text-[9px] uppercase mt-0.5 tracking-wider font-mono text-slate-400`}>{s.lbl}</span>
                       </div>
                     </div>
                   ))}
