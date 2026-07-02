@@ -50,7 +50,8 @@ import {
   Key,
   Lock,
   LogOut,
-  Star
+  Star,
+  ChevronDown
 } from 'lucide-react';
 import {
   INITIAL_SERVICES,
