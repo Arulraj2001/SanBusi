@@ -3,11 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nexus Digital | Enterprise Systems & Cloud Solutions</title>
+
+    <!-- ═══ PRIMARY SEO (static fallbacks, overridden dynamically by React) ═══ -->
+    <title>Nexus Digital | Enterprise Software & Cloud Solutions</title>
+    <meta name="description" content="Nexus Digital helps enterprises design, build and scale custom software, cloud infrastructure, e-commerce platforms, and AI-powered automation systems." />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Nexus Digital" />
+    <meta name="keywords" content="enterprise software, cloud infrastructure, digital agency, SaaS, AI integration, web app development, e-commerce" />
+
+    <!-- ═══ OPEN GRAPH (LinkedIn, Facebook, WhatsApp previews) ═══ -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Nexus Digital" />
+    <meta property="og:title" content="Nexus Digital | Enterprise Software & Cloud Solutions" />
+    <meta property="og:description" content="End-to-end digital solutions engineered for enterprise performance." />
+    <meta property="og:url" content="https://nexusdigital.com" />
+
+    <!-- ═══ TWITTER CARD ═══ -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Nexus Digital | Enterprise Software & Cloud Solutions" />
+    <meta name="twitter:description" content="End-to-end digital solutions engineered for enterprise performance." />
+
+    <!-- ═══ THEME & ICON ═══ -->
+    <meta name="theme-color" content="#6366f1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- ═══ PREVENT BLACK FLASH ═══
+         Body gets the same bg as the app wrapper so opacity:0 animation
+         never reveals a bare black/transparent body behind it. -->
+    <style>
+      html, body {
+        background-color: #f8fafc; /* slate-50 — matches light mode app bg */
+        margin: 0;
+        padding: 0;
+      }
+      /* Dark-mode: if the user had dark mode saved, apply instantly
+         before React hydrates to avoid a flash of wrong color */
+      html.dark, html.dark body {
+        background-color: #020617; /* slate-950 */
+      }
+    </style>
+
+    <!-- Apply saved dark mode before React loads to avoid FOUC -->
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

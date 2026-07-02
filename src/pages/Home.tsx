@@ -125,9 +125,9 @@ export default function Home({ services, portfolios, testimonials, setView, setS
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
+      initial={{ opacity: 1, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.75, ease: easePreset }}
+      transition={{ duration: 0.45, ease: easePreset }}
       className="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300 overflow-x-hidden"
     >
       

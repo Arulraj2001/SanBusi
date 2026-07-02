@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Block admin-only sections from being indexed
+Disallow: /#admin
+
+# Sitemap location
+Sitemap: https://nexusdigital.com/sitemap.xml

@@ -91,7 +91,15 @@ function AppContent() {
   const [faqs, setFaqs] = useState<Faq[]>([]);
   const [careers, setCareers] = useState<JobVacancy[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
-  const [settings, setSettings] = useState<WebsiteSettings>(INITIAL_SETTINGS);
+  // ── Pre-load settings from localStorage so the hero bg is correct on first paint
+  // ── This eliminates the black-flash before Firestore responds
+  const [settings, setSettings] = useState<WebsiteSettings>(() => {
+    try {
+      const cached = localStorage.getItem('local_settings');
+      if (cached) return JSON.parse(cached) as WebsiteSettings;
+    } catch (_) {}
+    return INITIAL_SETTINGS;
+  });
   const [dbLoading, setDbLoading] = useState<boolean>(true);
 
   // States for selected overlay structures
@@ -413,11 +421,83 @@ function AppContent() {
     loadDatabaseState();
   }, [user, isAdmin]);
 
-  // Dynamic document title update based on loaded configurations
+  // ── Comprehensive SEO & meta tag updater ──────────────────────────────────
   useEffect(() => {
-    if (settings && settings.companyName) {
-      document.title = settings.seoTitle || `${settings.companyName} | Digital Agency`;
+    if (!settings?.companyName) return;
+    const title = settings.seoTitle || `${settings.companyName} | Enterprise Digital Solutions`;
+    const desc = settings.seoDescription || `${settings.companyName} helps enterprises design, build and scale custom software, cloud infrastructure, and AI-powered digital systems.`;
+    const url = window.location.origin;
+
+    // Page title
+    document.title = title;
+
+    const setMeta = (selector: string, attr: string, value: string) => {
+      let el = document.querySelector(selector) as HTMLMetaElement | null;
+      if (!el) {
+        el = document.createElement('meta');
+        const [attrName] = attr.split('=');
+        el.setAttribute(attrName, attr.split('=')[1]?.replace(/"/g,'') || attrName);
+        document.head.appendChild(el);
+      }
+      el.setAttribute('content', value);
+    };
+
+    const setLink = (rel: string, href: string) => {
+      let el = document.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement | null;
+      if (!el) { el = document.createElement('link'); el.rel = rel; document.head.appendChild(el); }
+      el.href = href;
+    };
+
+    // Standard meta
+    setMeta('meta[name="description"]',          'name="description"',          desc);
+    setMeta('meta[name="robots"]',               'name="robots"',               'index, follow');
+    setMeta('meta[name="author"]',               'name="author"',               settings.companyName);
+    setMeta('meta[name="keywords"]',             'name="keywords"',             'enterprise software, cloud infrastructure, digital agency, SaaS, AI integration, web app development');
+
+    // Open Graph (Facebook / LinkedIn)
+    setMeta('meta[property="og:title"]',         'property="og:title"',         title);
+    setMeta('meta[property="og:description"]',   'property="og:description"',   desc);
+    setMeta('meta[property="og:type"]',          'property="og:type"',          'website');
+    setMeta('meta[property="og:url"]',           'property="og:url"',           url);
+    setMeta('meta[property="og:site_name"]',     'property="og:site_name"',     settings.companyName);
+    if (settings.logoUrl) {
+      setMeta('meta[property="og:image"]',       'property="og:image"',         settings.logoUrl);
     }
+
+    // Twitter Card
+    setMeta('meta[name="twitter:card"]',         'name="twitter:card"',         'summary_large_image');
+    setMeta('meta[name="twitter:title"]',        'name="twitter:title"',        title);
+    setMeta('meta[name="twitter:description"]',  'name="twitter:description"',  desc);
+    if (settings.socialLinks?.twitter) {
+      setMeta('meta[name="twitter:site"]',       'name="twitter:site"',         settings.socialLinks.twitter);
+    }
+
+    // Canonical
+    setLink('canonical', url);
+
+    // JSON-LD Structured Data (Organization schema)
+    const existingLd = document.getElementById('ld-organization');
+    if (existingLd) existingLd.remove();
+    const ld = document.createElement('script');
+    ld.id = 'ld-organization';
+    ld.type = 'application/ld+json';
+    ld.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: settings.companyName,
+      url,
+      email: settings.email || undefined,
+      telephone: settings.phone || undefined,
+      address: settings.address ? { '@type': 'PostalAddress', streetAddress: settings.address } : undefined,
+      sameAs: [
+        settings.socialLinks?.linkedin,
+        settings.socialLinks?.twitter,
+        settings.socialLinks?.github,
+        settings.socialLinks?.facebook,
+      ].filter(Boolean),
+      description: desc,
+    });
+    document.head.appendChild(ld);
   }, [settings]);
 
   /* ======================================================== */
