@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -6,11 +6,16 @@
   --font-inter: "Inter", sans-serif;
   --font-cormorant: "Cormorant Garamond", serif;
   --font-lora: "Lora", serif;
+  --font-jakarta: "Plus Jakarta Sans", sans-serif;
+  --font-space: "Space Grotesk", sans-serif;
+  --font-dmsans: "DM Sans", sans-serif;
+  --font-playfair: "Playfair Display", serif;
+  --font-ebgaramond: "EB Garamond", serif;
 }
 
 /* Default is Sans-serif */
 html.theme-font-sans,
-html:not(.theme-font-serif) {
+html:not(.theme-font-serif):not(.theme-font-corporate):not(.theme-font-minimalist):not(.theme-font-luxury) {
   --font-sans: "Inter", sans-serif;
   --font-serif: "Outfit", sans-serif;
 }
@@ -27,6 +32,24 @@ h1, h2, h3, h4, h5, h6 {
 html.theme-font-serif {
   --font-sans: "Lora", serif;
   --font-serif: "Cormorant Garamond", serif;
+}
+
+/* Sleek Corporate Tech */
+html.theme-font-corporate {
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-serif: "Plus Jakarta Sans", sans-serif;
+}
+
+/* Minimalist Space / Architectural */
+html.theme-font-minimalist {
+  --font-sans: "DM Sans", sans-serif;
+  --font-serif: "Space Grotesk", sans-serif;
+}
+
+/* Prestige Luxury / High-Fashion Editorial */
+html.theme-font-luxury {
+  --font-sans: "EB Garamond", serif;
+  --font-serif: "Playfair Display", serif;
 }
 
 @variant dark (&:where(.dark, .dark *));

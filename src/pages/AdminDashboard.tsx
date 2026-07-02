@@ -183,7 +183,7 @@ export default function AdminDashboard({
   const [setCntBanner, setSetCntBanner] = useState('');
   const [setAbtBanner, setSetAbtBanner] = useState('');
   const [setFbBanner, setSetFbBanner] = useState('');
-  const [setActiveFont, setSetActiveFont] = useState<'sans' | 'serif'>('sans');
+  const [setActiveFont, setSetActiveFont] = useState<'sans' | 'serif' | 'corporate' | 'minimalist' | 'luxury'>('sans');
 
   // 8. Local Bypass Passcode state
   const [oldPasscode, setOldPasscode] = useState('');
@@ -2772,11 +2772,14 @@ export default function AdminDashboard({
                   <div className="relative">
                     <select
                       value={setActiveFont}
-                      onChange={(e) => setSetActiveFont(e.target.value as 'sans' | 'serif')}
+                      onChange={(e) => setSetActiveFont(e.target.value as 'sans' | 'serif' | 'corporate' | 'minimalist' | 'luxury')}
                       className="w-full py-3 px-4 pr-9 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 appearance-none cursor-pointer transition-colors"
                     >
                       <option value="sans">Modern Sans-Serif (Outfit Header & Inter Body)</option>
                       <option value="serif">Premium Editorial Serif (Cormorant Garamond Header & Lora Body)</option>
+                      <option value="corporate">Sleek Corporate (Plus Jakarta Sans Everywhere)</option>
+                      <option value="minimalist">Minimalist Architectural (Space Grotesk Header & DM Sans Body)</option>
+                      <option value="luxury">Prestige Luxury Editorial (Playfair Display Header & EB Garamond Body)</option>
                     </select>
                     <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-slate-400 pointer-events-none" />
                   </div>

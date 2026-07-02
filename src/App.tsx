@@ -107,13 +107,12 @@ function AppContent() {
 
   // Set global typography class based on website settings
   useEffect(() => {
-    if (settings?.activeFont === 'serif') {
-      document.documentElement.classList.add('theme-font-serif');
-      document.documentElement.classList.remove('theme-font-sans');
-    } else {
-      document.documentElement.classList.add('theme-font-sans');
-      document.documentElement.classList.remove('theme-font-serif');
-    }
+    const fonts = ['sans', 'serif', 'corporate', 'minimalist', 'luxury'];
+    fonts.forEach(f => {
+      document.documentElement.classList.remove(`theme-font-${f}`);
+    });
+    const active = settings?.activeFont || 'sans';
+    document.documentElement.classList.add(`theme-font-${active}`);
   }, [settings?.activeFont]);
 
   // States for selected overlay structures
