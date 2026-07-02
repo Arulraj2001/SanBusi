@@ -503,6 +503,8 @@ export default function AdminDashboard({
         throw new Error("Local service");
       }
       await deleteDoc(doc(db, 'services', id));
+      const current = services.filter(x => x.id !== id);
+      localStorage.setItem('local_services', JSON.stringify(current));
       addToast('success', 'Service offering removed from index.');
       await refreshAllData();
     } catch (error) {
@@ -607,6 +609,8 @@ export default function AdminDashboard({
         throw new Error("Local portfolio");
       }
       await deleteDoc(doc(db, 'portfolio', id));
+      const current = portfolios.filter(x => x.id !== id);
+      localStorage.setItem('local_portfolio', JSON.stringify(current));
       addToast('success', 'Visual project removed from catalog.');
       await refreshAllData();
     } catch (error) {
@@ -712,6 +716,8 @@ export default function AdminDashboard({
         throw new Error("Local blog");
       }
       await deleteDoc(doc(db, 'blog', id));
+      const current = blogs.filter(x => x.id !== id);
+      localStorage.setItem('local_blog', JSON.stringify(current));
       addToast('success', 'Article removed from published indexes.');
       await refreshAllData();
     } catch (error) {
@@ -815,6 +821,8 @@ export default function AdminDashboard({
         throw new Error("Local testimonial");
       }
       await deleteDoc(doc(db, 'testimonials', id));
+      const current = testimonials.filter(x => x.id !== id);
+      localStorage.setItem('local_testimonials', JSON.stringify(current));
       addToast('success', 'Testimonial removed.');
       await refreshAllData();
     } catch (error) {
@@ -915,6 +923,8 @@ export default function AdminDashboard({
         throw new Error("Local FAQ");
       }
       await deleteDoc(doc(db, 'faqs', id));
+      const current = faqs.filter(x => x.id !== id);
+      localStorage.setItem('local_faqs', JSON.stringify(current));
       addToast('success', 'FAQ dropped.');
       await refreshAllData();
     } catch (error) {
@@ -1019,6 +1029,8 @@ export default function AdminDashboard({
         throw new Error("Local vacancy");
       }
       await deleteDoc(doc(db, 'careers', id));
+      const current = careers.filter(x => x.id !== id);
+      localStorage.setItem('local_careers', JSON.stringify(current));
       addToast('success', 'Vacancy slot removed.');
       await refreshAllData();
     } catch (error) {
@@ -1082,6 +1094,8 @@ export default function AdminDashboard({
         throw new Error("Local message");
       }
       await deleteDoc(doc(db, 'contactMessages', id));
+      const current = messages.filter(x => x.id !== id);
+      localStorage.setItem('local_contactMessages', JSON.stringify(current));
       addToast('success', 'Inquiry deleted.');
       await refreshAllData();
     } catch (error) {
