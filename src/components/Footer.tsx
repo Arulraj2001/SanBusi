@@ -1,4 +1,6 @@
-import { Mail, Phone, MapPin, Linkedin, Github, Twitter, Facebook, Lock, LayoutDashboard, LogOut } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Mail, Phone, MapPin, Linkedin, Github, Twitter, Facebook, Lock, LayoutDashboard, LogOut, X, ShieldCheck, Eye, Database, Key } from 'lucide-react';
 import { WebsiteSettings } from '../types';
 import { useAuth } from '../context/AuthContext';
 
@@ -9,6 +11,7 @@ interface FooterProps {
 
 export default function Footer({ setCurrentView, settings }: FooterProps) {
   const { user, logout } = useAuth();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const socialIcons = {
     linkedin: <Linkedin className="h-5 w-5" />,
@@ -158,7 +161,7 @@ export default function Footer({ setCurrentView, settings }: FooterProps) {
           <span>&copy; {new Date().getFullYear()} {settings.companyName || "Nexus Digital"}. All rights reserved globally.</span>
           <div className="flex items-center gap-6">
             <span className="hover:text-slate-300 transition-colors cursor-pointer" onClick={() => handleNavClick('about')}>About Corporate Profile</span>
-            <span className="hover:text-slate-300 transition-colors cursor-pointer" onClick={() => handleNavClick('contact')}>Privacy & Security Guardrails</span>
+            <span className="hover:text-slate-300 transition-colors cursor-pointer" onClick={() => setIsModalOpen(true)}>Privacy & Security Guardrails</span>
             
             {/* Admin Login / Panel Icon Trigger */}
             <div className="flex items-center gap-3 border-l border-slate-800 pl-4">
@@ -193,6 +196,112 @@ export default function Footer({ setCurrentView, settings }: FooterProps) {
         </div>
 
       </div>
+
+      {/* ═══ PRIVACY & SECURITY GUARDRAILS MODAL ═══ */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+            
+            {/* Modal Box */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ duration: 0.3 }}
+              className="relative w-full max-w-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-2xl text-slate-800 dark:text-slate-200"
+            >
+              
+              {/* Close Button */}
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="absolute right-4 top-4 p-2 text-slate-400 hover:text-slate-650 dark:hover:text-slate-250 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors z-10"
+              >
+                <X className="h-5 w-5" />
+              </button>
+
+              {/* Header */}
+              <div className="p-6 sm:p-8 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-indigo-400/20 bg-indigo-400/5 text-indigo-500 dark:text-indigo-400 text-[10px] font-bold uppercase tracking-widest">
+                  <ShieldCheck className="h-3.5 w-3.5" /> Corporate Security Posture
+                </span>
+                <h3 className="text-xl sm:text-2xl font-extrabold text-slate-950 dark:text-white mt-2 leading-tight">
+                  Privacy & Security Guardrails
+                </h3>
+                <p className="text-slate-400 text-xs mt-1">Operational standards, encryption parameters, and data governance controls.</p>
+              </div>
+
+              {/* Content / Features Grid */}
+              <div className="p-6 sm:p-8 max-h-[60vh] overflow-y-auto flex flex-col gap-6">
+                
+                {/* Section 1: Data Encryption */}
+                <div className="flex gap-4">
+                  <div className="h-10 w-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
+                    <Lock className="h-5 w-5" />
+                  </div>
+                  <div className="flex flex-col gap-1 text-xs">
+                    <span className="font-extrabold text-slate-950 dark:text-white text-sm">Hardware-Hardened Encryption</span>
+                    <p className="text-slate-550 dark:text-slate-350 leading-relaxed font-sans">
+                      All platform payloads, client profiles, and workspace specifications are encrypted in-transit using TLS 1.3 cryptographic suites and at-rest via military-grade AES-256 standard protocols.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Section 2: Zero Cookie Sell */}
+                <div className="flex gap-4">
+                  <div className="h-10 w-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
+                    <Eye className="h-5 w-5" />
+                  </div>
+                  <div className="flex flex-col gap-1 text-xs">
+                    <span className="font-extrabold text-slate-950 dark:text-white text-sm">Privacy Compliance Guidelines</span>
+                    <p className="text-slate-550 dark:text-slate-350 leading-relaxed font-sans">
+                      We operate in strict accordance with CCPA/GDPR compliance frameworks. Your contact emails, query details, and feedback metrics are never sold to external listing agents or third-party analytic matrices.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Section 3: Access Guardrails */}
+                <div className="flex gap-4">
+                  <div className="h-10 w-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
+                    <Key className="h-5 w-5" />
+                  </div>
+                  <div className="flex flex-col gap-1 text-xs">
+                    <span className="font-extrabold text-slate-950 dark:text-white text-sm">Executive Access Control & MFA</span>
+                    <p className="text-slate-550 dark:text-slate-350 leading-relaxed font-sans">
+                      Administrative console entry parameters require verified authentication token verification. We restrict dashboard configuration options using Attribute-Based Access Control policies to prevent credentials bypass.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Section 4: Infrastructure Isolation */}
+                <div className="flex gap-4">
+                  <div className="h-10 w-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
+                    <Database className="h-5 w-5" />
+                  </div>
+                  <div className="flex flex-col gap-1 text-xs">
+                    <span className="font-extrabold text-slate-950 dark:text-white text-sm">Hardened Sandbox Isolation</span>
+                    <p className="text-slate-550 dark:text-slate-350 leading-relaxed font-sans">
+                      System database nodes operate in high-availability, sandboxed private subnets. Multi-region firewalls actively restrict rogue ingress traffic, ensuring zero cross-tenant metadata leakage or unencrypted logs exposure.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Footer */}
+              <div className="p-4 sm:p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 flex items-center justify-between gap-4">
+                <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono">SOC2 Type II Aligned &bull; ISO 27001 Posture</span>
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 text-xs font-bold transition-colors cursor-pointer"
+                >
+                  Acknowledge Guardrails
+                </button>
+              </div>
+
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </footer>
   );
 }
