@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { FeedbackEntry, WebsiteSettings } from '../types';
 import {
   Star, Send, CheckCircle2, MessageSquare, Building2,
-  User, Briefcase, ChevronDown, TrendingUp, Award, Users, Sparkles
+  User, Briefcase, ChevronDown, Award, Sparkles, X, Edit3, Filter
 } from 'lucide-react';
 
 interface FeedbackProps {
@@ -20,7 +20,6 @@ const PROJECT_TYPES = [
   'Custom Software', 'UI/UX Design', 'Other'
 ];
 
-// Gradient palette for avatar initials
 const AVATAR_GRADIENTS = [
   'from-violet-500 to-indigo-500',
   'from-blue-500 to-cyan-500',
@@ -58,7 +57,7 @@ function StarPicker({ value, onChange }: { value: number; onChange: (v: number) 
             className={`h-7 w-7 transition-colors duration-150 ${
               star <= (hover || value)
                 ? 'fill-amber-400 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]'
-                : 'text-slate-300 dark:text-slate-600'
+                : 'text-slate-350 dark:text-slate-650'
             }`}
           />
         </button>
@@ -75,13 +74,28 @@ function StarPicker({ value, onChange }: { value: number; onChange: (v: number) 
 export default function Feedback({ feedbacks, settings, addToast }: FeedbackProps) {
   const approvedFeedbacks = feedbacks.filter(f => f.status === 'approved');
 
+  // Interactive UI Filters
+  const [starFilter, setStarFilter] = useState<number | 'all'>('all');
+  const [projectFilter, setProjectFilter] = useState<string | 'all'>('all');
+
+  const filteredFeedbacks = useMemo(() => {
+    return approvedFeedbacks.filter(fb => {
+      const matchStar = starFilter === 'all' || fb.rating === starFilter;
+      const matchProject = projectFilter === 'all' || fb.projectType === projectFilter;
+      return matchStar && matchProject;
+    });
+  }, [approvedFeedbacks, starFilter, projectFilter]);
+
+  // Floating notepad trigger state
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
   // Stats
   const avgRating = approvedFeedbacks.length
     ? (approvedFeedbacks.reduce((s, f) => s + f.rating, 0) / approvedFeedbacks.length).toFixed(1)
     : '—';
   const fiveStarCount = approvedFeedbacks.filter(f => f.rating === 5).length;
 
-  // Form state
+  // Form states
   const [form, setForm] = useState({
     name: '', company: '', role: '', rating: 0, projectType: '', message: ''
   });
@@ -128,76 +142,97 @@ export default function Feedback({ feedbacks, settings, addToast }: FeedbackProp
 
   const staggerContainer = {
     hidden: {},
-    visible: { transition: { staggerChildren: 0.08 } }
+    visible: { transition: { staggerChildren: 0.06 } }
   };
   const fadeUp = {
-    hidden: { opacity: 0, y: 22 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: easePreset } }
+    hidden: { opacity: 0, y: 16 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: easePreset } }
   };
 
   return (
-    <div className="bg-slate-50 dark:bg-slate-950 min-h-screen">
+    <div className="bg-slate-50 dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-100 font-sans pb-16 relative">
 
-      {/* ═══ HERO BANNER ═══ */}
-      <section className={`relative py-24 overflow-hidden flex items-center min-h-[38vh] ${hasBanner ? 'bg-slate-950' : 'bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900'}`}>
+      {/* ═══ 1. FLOATING NOTEPAD STYLE HANGING BUTTON ═══ */}
+      <div className="fixed right-0 top-1/3 -translate-y-1/2 z-40">
+        <motion.button
+          onClick={() => {
+            setSubmitted(false);
+            setIsFormOpen(true);
+          }}
+          whileHover={{ x: -6 }}
+          transition={{ type: 'spring', stiffness: 350, damping: 20 }}
+          className="flex items-center gap-3 py-4 pl-4 pr-6 bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-500 dark:to-violet-500 text-white rounded-l-2xl shadow-2xl shadow-indigo-500/30 cursor-pointer border-l border-y border-white/20 select-none group"
+        >
+          <div className="p-2 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+            <Edit3 className="h-4.5 w-4.5 text-white animate-pulse" />
+          </div>
+          <div className="flex flex-col items-start leading-none gap-0.5">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-200">Share Story</span>
+            <span className="text-xs font-extrabold tracking-tight">Leave Feedback</span>
+          </div>
+        </motion.button>
+      </div>
+
+      {/* ═══ 2. HERO BANNER (Enhanced Premium visual design) ═══ */}
+      <section className={`relative py-28 overflow-hidden flex items-center min-h-[42vh] ${hasBanner ? 'bg-slate-950' : 'bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-950'}`}>
         {hasBanner && (
           <div
             className="absolute inset-0 bg-cover bg-center pointer-events-none z-0"
-            style={{ backgroundImage: `url(${settings.feedbackBannerUrl})`, opacity: 0.18 }}
+            style={{ backgroundImage: `url(${settings.feedbackBannerUrl})`, opacity: 0.12 }}
           />
         )}
-        {/* Decorative orbs */}
-        <div className="absolute -top-20 left-1/3 w-[500px] h-[300px] rounded-full bg-indigo-600/15 blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 w-[350px] h-[200px] rounded-full bg-violet-600/10 blur-[80px] pointer-events-none" />
-        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
-        <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-500/30 to-transparent" />
+        {/* Sleek grid matrix visual overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+        
+        {/* Dynamic mesh glows */}
+        <div className="absolute -top-32 left-1/4 w-[600px] h-[350px] rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 right-1/3 w-[450px] h-[250px] rounded-full bg-violet-600/8 blur-[100px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center w-full">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: easePreset }}
+            transition={{ duration: 0.6, ease: easePreset }}
             className="flex flex-col items-center gap-5"
           >
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 text-xs font-bold uppercase tracking-widest">
-              <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-              Client Feedback
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-indigo-400/20 bg-indigo-400/5 text-indigo-400 dark:text-indigo-300 text-[10px] font-bold uppercase tracking-widest">
+              <Sparkles className="h-3.5 w-3.5" />
+              Verified Client Showcase
             </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight">
-              What Our Clients
-              <span className="block bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-violet-400">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-none">
+              What Our Partners
+              <span className="block bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-400 to-pink-500 mt-2">
                 Say About Us
               </span>
             </h1>
-            <p className="text-slate-300 text-base sm:text-lg max-w-xl leading-relaxed">
-              Real experiences from the businesses we've helped grow. Share yours below.
+            <p className="text-slate-500 dark:text-slate-400 text-sm sm:text-base max-w-lg leading-relaxed mt-2">
+              Discover real operational feedback and architectural stories from engineering teams we have empowered.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* ═══ STATS STRIP ═══ */}
+      {/* ═══ 3. STATS STRIP ═══ */}
       {approvedFeedbacks.length > 0 && (
-        <section className="bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <section className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800/80 shadow-sm relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="grid grid-cols-3 gap-4 sm:gap-8"
+              className="grid grid-cols-3 gap-4"
             >
               {[
-                { icon: <MessageSquare className="h-5 w-5 text-indigo-500" />, value: approvedFeedbacks.length.toString(), label: 'Client Reviews' },
-                { icon: <Star className="h-5 w-5 text-amber-400 fill-amber-400" />, value: `★ ${avgRating}`, label: 'Average Rating' },
-                { icon: <Award className="h-5 w-5 text-violet-500" />, value: `${fiveStarCount}`, label: '5-Star Reviews' },
+                { icon: <MessageSquare className="h-4.5 w-4.5 text-indigo-500" />, value: approvedFeedbacks.length.toString(), label: 'Client Reviews' },
+                { icon: <Star className="h-4.5 w-4.5 text-amber-400 fill-amber-400" />, value: `★ ${avgRating}`, label: 'Average Score' },
+                { icon: <Award className="h-4.5 w-4.5 text-pink-500" />, value: `${fiveStarCount}`, label: '5-Star Ratings' },
               ].map((stat, i) => (
-                <div key={i} className="flex flex-col items-center text-center gap-2">
-                  <div className="h-10 w-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
+                <div key={i} className="flex flex-col items-center text-center gap-1.5 border-r last:border-0 border-slate-100 dark:border-slate-800">
+                  <span className="text-lg sm:text-2xl font-extrabold text-slate-900 dark:text-white leading-none">{stat.value}</span>
+                  <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1">
                     {stat.icon}
-                  </div>
-                  <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">{stat.value}</span>
-                  <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-400">{stat.label}</span>
+                    <span className="hidden sm:inline">{stat.label}</span>
+                  </span>
                 </div>
               ))}
             </motion.div>
@@ -205,56 +240,96 @@ export default function Feedback({ feedbacks, settings, addToast }: FeedbackProp
         </section>
       )}
 
-      {/* ═══ FEEDBACK SHOWCASE GRID ═══ */}
-      {approvedFeedbacks.length > 0 ? (
-        <section className="relative py-20 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900 pointer-events-none" />
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* ═══ 4. FILTER BAR ═══ */}
+      {approvedFeedbacks.length > 0 && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
+          <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/60 shadow-sm text-xs">
+            <div className="flex items-center gap-2 text-slate-400">
+              <Filter className="h-4 w-4" />
+              <span className="font-bold uppercase tracking-wider text-[10px]">Filter Reviews:</span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              {/* Star Rating Filter */}
+              <div className="flex items-center gap-1.5">
+                <span className="text-slate-400">Rating:</span>
+                <select
+                  value={starFilter}
+                  onChange={e => setStarFilter(e.target.value === 'all' ? 'all' : Number(e.target.value))}
+                  className="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-semibold outline-none text-slate-800 dark:text-slate-200 cursor-pointer"
+                >
+                  <option value="all">All Stars</option>
+                  <option value="5">5 Stars</option>
+                  <option value="4">4 Stars</option>
+                  <option value="3">3 Stars</option>
+                </select>
+              </div>
+
+              {/* Project Type Filter */}
+              <div className="flex items-center gap-1.5">
+                <span className="text-slate-400">Project:</span>
+                <select
+                  value={projectFilter}
+                  onChange={e => setProjectFilter(e.target.value)}
+                  className="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-semibold outline-none text-slate-800 dark:text-slate-200 cursor-pointer"
+                >
+                  <option value="all">All Projects</option>
+                  {PROJECT_TYPES.map(pt => (
+                    <option key={pt} value={pt}>{pt}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ═══ 5. FEEDBACK SHOWCASE GRID ═══ */}
+      <section className="relative py-12 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {filteredFeedbacks.length > 0 ? (
             <motion.div
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: '-60px' }}
+              viewport={{ once: true }}
               className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6"
             >
-              {approvedFeedbacks.map((fb, i) => (
+              {filteredFeedbacks.map((fb, i) => (
                 <motion.div
                   key={fb.id || i}
                   variants={fadeUp}
-                  whileHover={{ y: -4, boxShadow: '0 20px 40px -10px rgba(99,102,241,0.15)', borderColor: 'rgba(99,102,241,0.35)', transition: { duration: 0.25 } }}
-                  className="break-inside-avoid mb-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-6 flex flex-col gap-4 group transition-all duration-300"
+                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                  className="break-inside-avoid mb-6 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200/50 dark:border-slate-800/80 rounded-3xl p-6 flex flex-col gap-4 group transition-all duration-300 shadow-sm hover:shadow-indigo-500/5 dark:hover:shadow-indigo-500/10"
                 >
-                  {/* Quote mark */}
-                  <div className="text-5xl font-serif text-indigo-100 dark:text-indigo-900/60 leading-none select-none">&ldquo;</div>
-
-                  {/* Stars */}
-                  <div className="flex items-center gap-0.5 -mt-4">
-                    {[1,2,3,4,5].map(s => (
-                      <Star key={s} className={`h-4 w-4 ${s <= fb.rating ? 'fill-amber-400 text-amber-400' : 'text-slate-200 dark:text-slate-700'}`} />
-                    ))}
-                    <span className="ml-2 text-[10px] font-bold text-amber-500 uppercase tracking-wider">
-                      {['','Poor','Fair','Good','Great','Excellent'][fb.rating]}
-                    </span>
+                  {/* Quote mark and header */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-4xl font-serif text-indigo-400/20 dark:text-indigo-800/40 leading-none select-none">&ldquo;</span>
+                    <div className="flex items-center gap-0.5">
+                      {[1,2,3,4,5].map(s => (
+                        <Star key={s} className={`h-3 w-3 ${s <= fb.rating ? 'fill-amber-400 text-amber-400' : 'text-slate-200 dark:text-slate-700'}`} />
+                      ))}
+                    </div>
                   </div>
 
                   {/* Message */}
-                  <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed italic flex-grow">
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed italic flex-grow">
                     {fb.message}
                   </p>
 
                   {/* Project type chip */}
-                  <span className="w-fit text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-800/40">
+                  <span className="w-fit text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/50 dark:border-slate-700/50">
                     {fb.projectType}
                   </span>
 
                   {/* Author */}
-                  <div className="flex items-center gap-3 pt-3 border-t border-slate-50 dark:border-slate-800">
-                    <div className={`h-10 w-10 rounded-full bg-gradient-to-br ${getAvatarGradient(fb.name)} flex items-center justify-center text-white text-sm font-bold shrink-0 shadow-sm`}>
+                  <div className="flex items-center gap-3 pt-3 border-t border-slate-100 dark:border-slate-800/60">
+                    <div className={`h-9 w-9 rounded-full bg-gradient-to-br ${getAvatarGradient(fb.name)} flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-inner`}>
                       {getInitials(fb.name)}
                     </div>
                     <div className="flex flex-col leading-tight min-w-0">
-                      <span className="text-sm font-bold text-slate-900 dark:text-white truncate">{fb.name}</span>
-                      <span className="text-[11px] text-slate-400 mt-0.5 truncate">
+                      <span className="text-xs font-bold text-slate-900 dark:text-white truncate">{fb.name}</span>
+                      <span className="text-[10px] text-slate-400 truncate">
                         {fb.role} · <span className="text-indigo-500 dark:text-indigo-400 font-semibold">{fb.company}</span>
                       </span>
                     </div>
@@ -262,218 +337,196 @@ export default function Feedback({ feedbacks, settings, addToast }: FeedbackProp
                 </motion.div>
               ))}
             </motion.div>
-          </div>
-        </section>
-      ) : (
-        <section className="py-24 flex flex-col items-center justify-center gap-4 text-center px-4">
-          <div className="h-16 w-16 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center">
-            <MessageSquare className="h-8 w-8 text-indigo-400" />
-          </div>
-          <h3 className="text-lg font-bold text-slate-700 dark:text-slate-200">No feedback yet</h3>
-          <p className="text-sm text-slate-400 max-w-xs">Be the first to share your experience — scroll down to submit yours.</p>
-        </section>
-      )}
-
-      {/* ═══ SUBMIT FEEDBACK FORM ═══ */}
-      <section id="feedback-form" className="relative py-24 overflow-hidden bg-slate-950">
-        {/* Layered bg */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-indigo-950/20 to-slate-950 pointer-events-none" />
-        <div className="absolute top-1/3 left-1/4 w-[500px] h-[300px] bg-indigo-600/8 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/3 w-[400px] h-[200px] bg-violet-600/8 rounded-full blur-[80px] pointer-events-none" />
-        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
-
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-col items-center text-center gap-4 mb-12"
-          >
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-bold uppercase tracking-widest">
-              <Sparkles className="h-3.5 w-3.5" />
-              Share Your Experience
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              How Did We Do?
-            </h2>
-            <p className="text-slate-400 text-sm max-w-sm leading-relaxed">
-              Your feedback helps us improve and lets future clients make informed decisions.
-            </p>
-          </motion.div>
-
-          <AnimatePresence mode="wait">
-            {submitted ? (
-              <motion.div
-                key="success"
-                initial={{ opacity: 0, scale: 0.92, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, ease: easePreset }}
-                className="flex flex-col items-center gap-6 text-center bg-slate-900/60 border border-slate-700/50 backdrop-blur-sm rounded-3xl p-12"
-              >
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: 'spring', stiffness: 260, damping: 18, delay: 0.1 }}
-                  className="h-20 w-20 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-xl shadow-indigo-500/30"
-                >
-                  <CheckCircle2 className="h-10 w-10 text-white" />
-                </motion.div>
-                <div className="flex flex-col gap-2">
-                  <h3 className="text-2xl font-extrabold text-white">Thank You!</h3>
-                  <p className="text-slate-300 text-sm max-w-xs leading-relaxed">
-                    Your feedback has been submitted and is pending review. It will appear on this page once approved.
-                  </p>
-                </div>
-                <div className="flex items-center gap-1.5 text-[11px] text-slate-500 font-mono">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                  <span>Typically reviewed within 24 hours</span>
-                </div>
-                <button
-                  onClick={() => { setSubmitted(false); setForm({ name: '', company: '', role: '', rating: 0, projectType: '', message: '' }); }}
-                  className="px-6 py-2.5 rounded-xl border border-slate-700 text-slate-300 text-xs font-semibold hover:border-indigo-500 hover:text-indigo-300 transition-colors cursor-pointer"
-                >
-                  Submit Another
-                </button>
-              </motion.div>
-            ) : (
-              <motion.form
-                key="form"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onSubmit={handleSubmit}
-                className="bg-slate-900/60 border border-slate-700/50 backdrop-blur-sm rounded-3xl p-7 sm:p-10 flex flex-col gap-6"
-              >
-
-                {/* Row 1: Name + Company */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
-                      <User className="h-3 w-3" /> Full Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Alex Johnson"
-                      value={form.name}
-                      onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                      className={`w-full px-4 py-3 rounded-xl bg-slate-800/60 border text-sm text-white placeholder-slate-500 outline-none focus:border-indigo-500 transition-colors ${errors.name ? 'border-rose-500' : 'border-slate-700'}`}
-                    />
-                    {errors.name && <span className="text-[10px] text-rose-400">{errors.name}</span>}
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
-                      <Building2 className="h-3 w-3" /> Company
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Acme Corp"
-                      value={form.company}
-                      onChange={e => setForm(f => ({ ...f, company: e.target.value }))}
-                      className={`w-full px-4 py-3 rounded-xl bg-slate-800/60 border text-sm text-white placeholder-slate-500 outline-none focus:border-indigo-500 transition-colors ${errors.company ? 'border-rose-500' : 'border-slate-700'}`}
-                    />
-                    {errors.company && <span className="text-[10px] text-rose-400">{errors.company}</span>}
-                  </div>
-                </div>
-
-                {/* Row 2: Role + Project Type */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
-                      <Briefcase className="h-3 w-3" /> Your Role
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="CTO, Product Manager..."
-                      value={form.role}
-                      onChange={e => setForm(f => ({ ...f, role: e.target.value }))}
-                      className={`w-full px-4 py-3 rounded-xl bg-slate-800/60 border text-sm text-white placeholder-slate-500 outline-none focus:border-indigo-500 transition-colors ${errors.role ? 'border-rose-500' : 'border-slate-700'}`}
-                    />
-                    {errors.role && <span className="text-[10px] text-rose-400">{errors.role}</span>}
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
-                      <TrendingUp className="h-3 w-3" /> Project Type
-                    </label>
-                    <div className="relative">
-                      <select
-                        value={form.projectType}
-                        onChange={e => setForm(f => ({ ...f, projectType: e.target.value }))}
-                        className={`w-full px-4 py-3 pr-9 rounded-xl bg-slate-800/60 border text-sm text-white outline-none focus:border-indigo-500 appearance-none transition-colors cursor-pointer ${errors.projectType ? 'border-rose-500' : 'border-slate-700'} ${!form.projectType ? 'text-slate-500' : 'text-white'}`}
-                      >
-                        <option value="" disabled className="bg-slate-800">Select project type</option>
-                        {PROJECT_TYPES.map(pt => (
-                          <option key={pt} value={pt} className="bg-slate-800">{pt}</option>
-                        ))}
-                      </select>
-                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
-                    </div>
-                    {errors.projectType && <span className="text-[10px] text-rose-400">{errors.projectType}</span>}
-                  </div>
-                </div>
-
-                {/* Row 3: Star Rating */}
-                <div className="flex flex-col gap-2">
-                  <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
-                    <Star className="h-3 w-3" /> Your Rating
-                  </label>
-                  <StarPicker value={form.rating} onChange={v => setForm(f => ({ ...f, rating: v }))} />
-                  {errors.rating && <span className="text-[10px] text-rose-400">{errors.rating}</span>}
-                </div>
-
-                {/* Row 4: Message */}
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
-                    <MessageSquare className="h-3 w-3" /> Your Feedback
-                  </label>
-                  <textarea
-                    rows={5}
-                    placeholder="Tell us about your experience working with us — what went well, what we delivered, and how it impacted your business..."
-                    value={form.message}
-                    onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
-                    className={`w-full px-4 py-3 rounded-xl bg-slate-800/60 border text-sm text-white placeholder-slate-500 outline-none focus:border-indigo-500 resize-none transition-colors leading-relaxed ${errors.message ? 'border-rose-500' : 'border-slate-700'}`}
-                  />
-                  <div className="flex items-center justify-between">
-                    {errors.message
-                      ? <span className="text-[10px] text-rose-400">{errors.message}</span>
-                      : <span className="text-[10px] text-slate-500">Minimum 20 characters</span>
-                    }
-                    <span className={`text-[10px] font-mono ${form.message.length < 20 ? 'text-slate-600' : 'text-emerald-500'}`}>
-                      {form.message.length} chars
-                    </span>
-                  </div>
-                </div>
-
-                {/* Submit */}
-                <motion.button
-                  type="submit"
-                  disabled={submitting}
-                  whileHover={{ scale: 1.02, boxShadow: '0 10px 30px -5px rgba(99,102,241,0.4)' }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex items-center justify-center gap-2.5 w-full py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-sm rounded-xl shadow-lg shadow-indigo-500/25 cursor-pointer transition-all duration-300"
-                >
-                  {submitting ? (
-                    <>
-                      <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      <span>Submitting...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Send className="h-4 w-4" />
-                      <span>Submit Feedback</span>
-                    </>
-                  )}
-                </motion.button>
-
-                <p className="text-center text-[10px] text-slate-500 leading-relaxed">
-                  Your feedback is reviewed before publishing. We may reach out to verify your submission.
-                </p>
-              </motion.form>
-            )}
-          </AnimatePresence>
+          ) : (
+            <div className="py-20 text-center flex flex-col items-center justify-center gap-3">
+              <MessageSquare className="h-10 w-10 text-slate-300 dark:text-slate-700 animate-bounce" />
+              <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300">No matching feedback found</h3>
+              <p className="text-xs text-slate-400 max-w-xs">Try selecting a different filter range or submit your own review using the floating tab.</p>
+            </div>
+          )}
         </div>
       </section>
+
+      {/* ═══ 6. POPUP MODAL SUBMISSION FORM ═══ */}
+      <AnimatePresence>
+        {isFormOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md">
+            
+            {/* Modal Box */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ duration: 0.3 }}
+              className="relative w-full max-w-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-2xl"
+            >
+              
+              {/* Close Button */}
+              <button
+                onClick={() => setIsFormOpen(false)}
+                className="absolute right-4 top-4 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors z-10"
+              >
+                <X className="h-5 w-5" />
+              </button>
+
+              {/* Form viewport */}
+              <div className="p-6 sm:p-10 max-h-[85vh] overflow-y-auto">
+                <AnimatePresence mode="wait">
+                  {submitted ? (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="flex flex-col items-center gap-6 text-center py-10"
+                    >
+                      <div className="h-16 w-16 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/25">
+                        <CheckCircle2 className="h-8 w-8 text-white" />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <h3 className="text-xl font-extrabold text-slate-900 dark:text-white">Review Submitted!</h3>
+                        <p className="text-slate-500 dark:text-slate-400 text-xs max-w-xs leading-relaxed">
+                          Your response has been loaded into our administration console and will appear live upon validation.
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-center gap-3">
+                        <button
+                          onClick={() => {
+                            setSubmitted(false);
+                            setForm({ name: '', company: '', role: '', rating: 0, projectType: '', message: '' });
+                          }}
+                          className="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold hover:bg-slate-50 cursor-pointer"
+                        >
+                          Submit Another
+                        </button>
+                        <button
+                          onClick={() => setIsFormOpen(false)}
+                          className="px-5 py-2.5 rounded-xl bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-white text-white dark:text-slate-900 text-xs font-bold cursor-pointer"
+                        >
+                          Close Window
+                        </button>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.form
+                      key="form"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      onSubmit={handleSubmit}
+                      className="flex flex-col gap-5 text-slate-800 dark:text-slate-200"
+                    >
+                      <div>
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-indigo-400/20 bg-indigo-400/5 text-indigo-500 text-[10px] font-bold uppercase tracking-widest">
+                          <Sparkles className="h-3 w-3" /> Share Experience
+                        </span>
+                        <h3 className="text-2xl font-extrabold text-slate-950 dark:text-white mt-2">Submit Feedback</h3>
+                        <p className="text-slate-400 text-xs mt-1">Briefly outline your operational experiences below.</p>
+                      </div>
+
+                      {/* Name + Company */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-1">
+                          <label className="text-[10px] font-bold uppercase tracking-wider text-slate-450">Full Name</label>
+                          <input
+                            type="text"
+                            placeholder="Alex Johnson"
+                            value={form.name}
+                            onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                            className={`w-full px-4.5 py-2.5 rounded-xl border text-xs bg-slate-50 dark:bg-slate-950/20 outline-none focus:border-indigo-500 text-slate-900 dark:text-white ${errors.name ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'}`}
+                          />
+                          {errors.name && <span className="text-[9px] text-rose-500">{errors.name}</span>}
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <label className="text-[10px] font-bold uppercase tracking-wider text-slate-450">Company Name</label>
+                          <input
+                            type="text"
+                            placeholder="Acme Corp"
+                            value={form.company}
+                            onChange={e => setForm(f => ({ ...f, company: e.target.value }))}
+                            className={`w-full px-4.5 py-2.5 rounded-xl border text-xs bg-slate-50 dark:bg-slate-950/20 outline-none focus:border-indigo-500 text-slate-900 dark:text-white ${errors.company ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'}`}
+                          />
+                          {errors.company && <span className="text-[9px] text-rose-500">{errors.company}</span>}
+                        </div>
+                      </div>
+
+                      {/* Role + Project Type */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-1">
+                          <label className="text-[10px] font-bold uppercase tracking-wider text-slate-455">Corporate Role</label>
+                          <input
+                            type="text"
+                            placeholder="Engineering Principal"
+                            value={form.role}
+                            onChange={e => setForm(f => ({ ...f, role: e.target.value }))}
+                            className={`w-full px-4.5 py-2.5 rounded-xl border text-xs bg-slate-50 dark:bg-slate-950/20 outline-none focus:border-indigo-500 text-slate-900 dark:text-white ${errors.role ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'}`}
+                          />
+                          {errors.role && <span className="text-[9px] text-rose-500">{errors.role}</span>}
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <label className="text-[10px] font-bold uppercase tracking-wider text-slate-455">Project Category</label>
+                          <div className="relative">
+                            <select
+                              value={form.projectType}
+                              onChange={e => setForm(f => ({ ...f, projectType: e.target.value }))}
+                              className={`w-full px-4.5 py-2.5 pr-8 rounded-xl border text-xs bg-slate-50 dark:bg-slate-950/20 outline-none focus:border-indigo-500 appearance-none text-slate-800 dark:text-slate-200 cursor-pointer ${errors.projectType ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'}`}
+                            >
+                              <option value="" disabled>Select category</option>
+                              {PROJECT_TYPES.map(pt => <option key={pt} value={pt}>{pt}</option>)}
+                            </select>
+                            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                          </div>
+                          {errors.projectType && <span className="text-[9px] text-rose-500">{errors.projectType}</span>}
+                        </div>
+                      </div>
+
+                      {/* Rating selection */}
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[10px] font-bold uppercase tracking-wider text-slate-455">Rating Score</label>
+                        <StarPicker value={form.rating} onChange={r => setForm(f => ({ ...f, rating: r }))} />
+                        {errors.rating && <span className="text-[9px] text-rose-500">{errors.rating}</span>}
+                      </div>
+
+                      {/* Feedback Textarea */}
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[10px] font-bold uppercase tracking-wider text-slate-455">Feedback Description</label>
+                        <textarea
+                          rows={4}
+                          placeholder="Your message (minimum 20 characters)..."
+                          value={form.message}
+                          onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                          className={`w-full px-4.5 py-2.5 rounded-xl border text-xs bg-slate-50 dark:bg-slate-950/20 outline-none focus:border-indigo-500 resize-none text-slate-900 dark:text-white leading-relaxed ${errors.message ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'}`}
+                        />
+                        <div className="flex items-center justify-between text-[9px] text-slate-400">
+                          <span>Min 20 characters</span>
+                          <span className={form.message.length < 20 ? 'text-rose-400' : 'text-emerald-500'}>
+                            {form.message.length} chars
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Submit Trigger */}
+                      <button
+                        type="submit"
+                        disabled={submitting}
+                        className="w-full py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-xs rounded-xl shadow-lg hover:scale-[1.01] transition-transform cursor-pointer flex items-center justify-center gap-2"
+                      >
+                        {submitting ? (
+                          <div className="h-4.5 w-4.5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                        ) : (
+                          <>
+                            <Send className="h-3.5 w-3.5" />
+                            <span>Submit Feedback</span>
+                          </>
+                        )}
+                      </button>
+                    </motion.form>
+                  )}
+                </AnimatePresence>
+              </div>
+
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
