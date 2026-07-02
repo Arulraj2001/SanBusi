@@ -183,18 +183,22 @@ function AppContent() {
       if (localServicesVal) {
         try { localServices = JSON.parse(localServicesVal); } catch (e) {}
       }
-      const localOnlyServices = localServices.filter(item => 
-        item.id.toString().startsWith('local-srv-') && 
+      const localOnlyServices = localServices.filter(item =>
         !servicesList.some(dbItem => dbItem.id === item.id)
       );
       const mergedServices = [...servicesList, ...localOnlyServices];
       if (mergedServices.length > 0) {
         setServices(enrichServices(mergedServices));
         localStorage.setItem('local_services', JSON.stringify(mergedServices));
-      } else {
+      } else if (!localServicesVal) {
+        // Truly first install — no cache at all
         const list = enrichServices(INITIAL_SERVICES);
         setServices(list);
         localStorage.setItem('local_services', JSON.stringify(list));
+      } else {
+        // User intentionally emptied the list — respect that
+        setServices([]);
+        localStorage.setItem('local_services', JSON.stringify([]));
       }
 
       // 2. PORTFOLIO
@@ -212,18 +216,20 @@ function AppContent() {
       if (localPortfoliosVal) {
         try { localPortfolios = JSON.parse(localPortfoliosVal); } catch (e) {}
       }
-      const localOnlyPortfolios = localPortfolios.filter(item => 
-        item.id.toString().startsWith('local-port-') && 
+      const localOnlyPortfolios = localPortfolios.filter(item =>
         !portfoliosList.some(dbItem => dbItem.id === item.id)
       );
       const mergedPortfolios = [...portfoliosList, ...localOnlyPortfolios];
       if (mergedPortfolios.length > 0) {
         setPortfolios(enrichPortfolios(mergedPortfolios));
         localStorage.setItem('local_portfolio', JSON.stringify(mergedPortfolios));
-      } else {
+      } else if (!localPortfoliosVal) {
         const list = enrichPortfolios(INITIAL_PORTFOLIOS);
         setPortfolios(list);
         localStorage.setItem('local_portfolio', JSON.stringify(list));
+      } else {
+        setPortfolios([]);
+        localStorage.setItem('local_portfolio', JSON.stringify([]));
       }
 
       // 3. BLOGS
@@ -241,18 +247,20 @@ function AppContent() {
       if (localBlogsVal) {
         try { localBlogs = JSON.parse(localBlogsVal); } catch (e) {}
       }
-      const localOnlyBlogs = localBlogs.filter(item => 
-        item.id.toString().startsWith('local-blog-') && 
+      const localOnlyBlogs = localBlogs.filter(item =>
         !blogsList.some(dbItem => dbItem.id === item.id)
       );
       const mergedBlogs = [...blogsList, ...localOnlyBlogs];
       if (mergedBlogs.length > 0) {
         setBlogs(enrichBlogs(mergedBlogs));
         localStorage.setItem('local_blog', JSON.stringify(mergedBlogs));
-      } else {
+      } else if (!localBlogsVal) {
         const list = enrichBlogs(INITIAL_BLOGS);
         setBlogs(list);
         localStorage.setItem('local_blog', JSON.stringify(list));
+      } else {
+        setBlogs([]);
+        localStorage.setItem('local_blog', JSON.stringify([]));
       }
 
       // 4. TESTIMONIALS
@@ -270,18 +278,20 @@ function AppContent() {
       if (localTestimonialsVal) {
         try { localTestimonials = JSON.parse(localTestimonialsVal); } catch (e) {}
       }
-      const localOnlyTestimonials = localTestimonials.filter(item => 
-        item.id.toString().startsWith('local-test-') && 
+      const localOnlyTestimonials = localTestimonials.filter(item =>
         !testimonialsList.some(dbItem => dbItem.id === item.id)
       );
       const mergedTestimonials = [...testimonialsList, ...localOnlyTestimonials];
       if (mergedTestimonials.length > 0) {
         setTestimonials(enrichTestimonials(mergedTestimonials));
         localStorage.setItem('local_testimonials', JSON.stringify(mergedTestimonials));
-      } else {
+      } else if (!localTestimonialsVal) {
         const list = enrichTestimonials(INITIAL_TESTIMONIALS);
         setTestimonials(list);
         localStorage.setItem('local_testimonials', JSON.stringify(list));
+      } else {
+        setTestimonials([]);
+        localStorage.setItem('local_testimonials', JSON.stringify([]));
       }
 
       // 5. FAQS
@@ -299,18 +309,20 @@ function AppContent() {
       if (localFaqsVal) {
         try { localFaqs = JSON.parse(localFaqsVal); } catch (e) {}
       }
-      const localOnlyFaqs = localFaqs.filter(item => 
-        item.id.toString().startsWith('local-faq-') && 
+      const localOnlyFaqs = localFaqs.filter(item =>
         !faqsList.some(dbItem => dbItem.id === item.id)
       );
       const mergedFaqs = [...faqsList, ...localOnlyFaqs];
       if (mergedFaqs.length > 0) {
         setFaqs(enrichFaqs(mergedFaqs));
         localStorage.setItem('local_faqs', JSON.stringify(mergedFaqs));
-      } else {
+      } else if (!localFaqsVal) {
         const list = enrichFaqs(INITIAL_FAQS);
         setFaqs(list);
         localStorage.setItem('local_faqs', JSON.stringify(list));
+      } else {
+        setFaqs([]);
+        localStorage.setItem('local_faqs', JSON.stringify([]));
       }
 
       // 6. CAREERS
@@ -328,18 +340,20 @@ function AppContent() {
       if (localCareersVal) {
         try { localCareers = JSON.parse(localCareersVal); } catch (e) {}
       }
-      const localOnlyCareers = localCareers.filter(item => 
-        item.id.toString().startsWith('local-car-') && 
+      const localOnlyCareers = localCareers.filter(item =>
         !careersList.some(dbItem => dbItem.id === item.id)
       );
       const mergedCareers = [...careersList, ...localOnlyCareers];
       if (mergedCareers.length > 0) {
         setCareers(enrichCareers(mergedCareers));
         localStorage.setItem('local_careers', JSON.stringify(mergedCareers));
-      } else {
+      } else if (!localCareersVal) {
         const list = enrichCareers(INITIAL_CAREERS);
         setCareers(list);
         localStorage.setItem('local_careers', JSON.stringify(list));
+      } else {
+        setCareers([]);
+        localStorage.setItem('local_careers', JSON.stringify([]));
       }
 
       // 7. INBOUND CUSTOMER LEADS (Admin only visibility, handled securely under firestore rules)
