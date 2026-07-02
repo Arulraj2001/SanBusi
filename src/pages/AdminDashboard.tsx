@@ -182,6 +182,7 @@ export default function AdminDashboard({
   const [setCntBanner, setSetCntBanner] = useState('');
   const [setAbtBanner, setSetAbtBanner] = useState('');
   const [setFbBanner, setSetFbBanner] = useState('');
+  const [setActiveFont, setSetActiveFont] = useState<'sans' | 'serif'>('sans');
 
   // 8. Local Bypass Passcode state
   const [oldPasscode, setOldPasscode] = useState('');
@@ -227,6 +228,7 @@ export default function AdminDashboard({
       setSetCntBanner(settings.contactBannerUrl || '');
       setSetAbtBanner(settings.aboutBannerUrl || '');
       setSetFbBanner(settings.feedbackBannerUrl || '');
+      setSetActiveFont(settings.activeFont || 'sans');
 
       // Hydrate About settings
       setAboutSub(settings.aboutHeroSubtitle || 'Our Origin Story');
@@ -1198,6 +1200,7 @@ export default function AdminDashboard({
       feedbackBannerUrl: setFbBanner.trim(),
       contactBannerUrl: setCntBanner.trim(),
       aboutBannerUrl: setAbtBanner.trim(),
+      activeFont: setActiveFont,
       // About Page parameters
       aboutHeroSubtitle: aboutSub.trim(),
       aboutHeroTitle: aboutH1.trim(),
@@ -2760,6 +2763,27 @@ export default function AdminDashboard({
                 </div>
 
                 <div className="h-px bg-slate-100 dark:bg-slate-850 my-2" />
+
+                {/* Typography Theme Settings */}
+                <h4 className="text-sm font-bold uppercase tracking-wider text-slate-400">Website Theme Typography</h4>
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Default Brand Font Style</label>
+                  <div className="relative">
+                    <select
+                      value={setActiveFont}
+                      onChange={(e) => setSetActiveFont(e.target.value as 'sans' | 'serif')}
+                      className="w-full py-3 px-4 pr-9 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 appearance-none cursor-pointer transition-colors"
+                    >
+                      <option value="sans">Modern Sans-Serif (Outfit Header & Inter Body)</option>
+                      <option value="serif">Premium Editorial Serif (Cormorant Garamond Header & Lora Body)</option>
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-slate-400 pointer-events-none" />
+                  </div>
+                  <p className="text-[10px] text-slate-400 font-sans mt-0.5">Choose the typography theme applied globally across user-facing pages, showcases, and blog content posts.</p>
+                </div>
+
+                <div className="h-px bg-slate-100 dark:bg-slate-850 my-2" />
+
 
                 {/* Social entries */}
                 <h4 className="text-sm font-bold uppercase tracking-wider text-slate-400">Social Connections handles</h4>

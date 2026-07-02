@@ -125,6 +125,7 @@ export interface WebsiteSettings {
   faqBannerUrl?: string;
   contactBannerUrl?: string;
   aboutBannerUrl?: string;
+  activeFont?: 'sans' | 'serif';
 }
 
 export interface Admin {

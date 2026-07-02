@@ -85,6 +85,17 @@ function AppContent() {
     }
   }, [isDark]);
 
+  // Set global typography class based on website settings
+  useEffect(() => {
+    if (settings?.activeFont === 'serif') {
+      document.documentElement.classList.add('theme-font-serif');
+      document.documentElement.classList.remove('theme-font-sans');
+    } else {
+      document.documentElement.classList.add('theme-font-sans');
+      document.documentElement.classList.remove('theme-font-serif');
+    }
+  }, [settings?.activeFont]);
+
   // Firestore DB sync states
   const [services, setServices] = useState<Service[]>([]);
   const [portfolios, setPortfolios] = useState<PortfolioProject[]>([]);
