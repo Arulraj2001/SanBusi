@@ -151,7 +151,7 @@ export default function About({ settings }: AboutProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {teamMembers.map((member, idx) => (
             <div key={idx} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-900 rounded-3xl p-6 flex flex-col gap-6 shadow-sm">
-              <div className="aspect-square w-full rounded-2xl overflow-hidden bg-slate-100">
+              <div className="aspect-[4/3] w-full rounded-2xl overflow-hidden bg-slate-100">
                 <img src={member.image} alt={member.name} className="h-full w-full object-cover" referrerPolicy="no-referrer" />
               </div>
               <div className="flex flex-col gap-1">
