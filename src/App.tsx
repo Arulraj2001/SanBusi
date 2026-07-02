@@ -115,6 +115,18 @@ function AppContent() {
     document.documentElement.classList.add(`theme-font-${active}`);
   }, [settings?.activeFont]);
 
+  // Set global base font size based on website settings
+  useEffect(() => {
+    const sizeMap = {
+      sm: '15px',
+      base: '16px',
+      lg: '17.5px',
+      xl: '19px'
+    };
+    const size = settings?.baseFontSize || 'base';
+    document.documentElement.style.fontSize = sizeMap[size];
+  }, [settings?.baseFontSize]);
+
   // States for selected overlay structures
   const [selectedProject, setSelectedProject] = useState<PortfolioProject | null>(null);
 

@@ -184,6 +184,7 @@ export default function AdminDashboard({
   const [setAbtBanner, setSetAbtBanner] = useState('');
   const [setFbBanner, setSetFbBanner] = useState('');
   const [setActiveFont, setSetActiveFont] = useState<'sans' | 'serif' | 'corporate' | 'minimalist' | 'luxury'>('sans');
+  const [baseFontSize, setBaseFontSize] = useState<'sm' | 'base' | 'lg' | 'xl'>('base');
 
   // 8. Local Bypass Passcode state
   const [oldPasscode, setOldPasscode] = useState('');
@@ -230,6 +231,7 @@ export default function AdminDashboard({
       setSetAbtBanner(settings.aboutBannerUrl || '');
       setSetFbBanner(settings.feedbackBannerUrl || '');
       setSetActiveFont(settings.activeFont || 'sans');
+      setBaseFontSize(settings.baseFontSize || 'base');
 
       // Hydrate About settings
       setAboutSub(settings.aboutHeroSubtitle || 'Our Origin Story');
@@ -1202,6 +1204,7 @@ export default function AdminDashboard({
       contactBannerUrl: setCntBanner.trim(),
       aboutBannerUrl: setAbtBanner.trim(),
       activeFont: setActiveFont,
+      baseFontSize: baseFontSize,
       // About Page parameters
       aboutHeroSubtitle: aboutSub.trim(),
       aboutHeroTitle: aboutH1.trim(),
@@ -2767,24 +2770,48 @@ export default function AdminDashboard({
 
                 {/* Typography Theme Settings */}
                 <h4 className="text-sm font-bold uppercase tracking-wider text-slate-400">Website Theme Typography</h4>
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Default Brand Font Style</label>
-                  <div className="relative">
-                    <select
-                      value={setActiveFont}
-                      onChange={(e) => setSetActiveFont(e.target.value as 'sans' | 'serif' | 'corporate' | 'minimalist' | 'luxury')}
-                      className="w-full py-3 px-4 pr-9 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 appearance-none cursor-pointer transition-colors"
-                    >
-                      <option value="sans">Modern Sans-Serif (Outfit Header & Inter Body)</option>
-                      <option value="serif">Premium Editorial Serif (Cormorant Garamond Header & Lora Body)</option>
-                      <option value="corporate">Sleek Corporate (Plus Jakarta Sans Everywhere)</option>
-                      <option value="minimalist">Minimalist Architectural (Space Grotesk Header & DM Sans Body)</option>
-                      <option value="luxury">Prestige Luxury Editorial (Playfair Display Header & EB Garamond Body)</option>
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-slate-400 pointer-events-none" />
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  
+                  {/* Font Family Selection */}
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Default Brand Font Style</label>
+                    <div className="relative">
+                      <select
+                        value={setActiveFont}
+                        onChange={(e) => setSetActiveFont(e.target.value as 'sans' | 'serif' | 'corporate' | 'minimalist' | 'luxury')}
+                        className="w-full py-3 px-4 pr-9 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 appearance-none cursor-pointer transition-colors"
+                      >
+                        <option value="sans">Modern Sans-Serif (Outfit Header & Inter Body)</option>
+                        <option value="serif">Premium Editorial Serif (Cormorant Garamond Header & Lora Body)</option>
+                        <option value="corporate">Sleek Corporate (Plus Jakarta Sans Everywhere)</option>
+                        <option value="minimalist">Minimalist Architectural (Space Grotesk Header & DM Sans Body)</option>
+                        <option value="luxury">Prestige Luxury Editorial (Playfair Display Header & EB Garamond Body)</option>
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-slate-400 pointer-events-none" />
+                    </div>
                   </div>
-                  <p className="text-[10px] text-slate-400 font-sans mt-0.5">Choose the typography theme applied globally across user-facing pages, showcases, and blog content posts.</p>
+
+                  {/* Font Size Selector */}
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Default Global Text Size Scale</label>
+                    <div className="relative">
+                      <select
+                        value={baseFontSize}
+                        onChange={(e) => setBaseFontSize(e.target.value as 'sm' | 'base' | 'lg' | 'xl')}
+                        className="w-full py-3 px-4 pr-9 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-slate-800 outline-none text-slate-850 dark:text-slate-200 focus:border-indigo-500 appearance-none cursor-pointer transition-colors"
+                      >
+                        <option value="sm">Small text scale (15px base)</option>
+                        <option value="base">Standard default scale (16px base)</option>
+                        <option value="lg">Comfortable reading scale (17.5px base)</option>
+                        <option value="xl">Enhanced visibility scale (19px base)</option>
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-slate-400 pointer-events-none" />
+                    </div>
+                  </div>
+
                 </div>
+                <p className="text-[10px] text-slate-400 font-sans mt-0.5">Choose the typography theme and base scale applied globally across user-facing pages, showcases, and blog content posts.</p>
 
                 <div className="h-px bg-slate-100 dark:bg-slate-850 my-2" />
 

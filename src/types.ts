@@ -126,6 +126,7 @@ export interface WebsiteSettings {
   contactBannerUrl?: string;
   aboutBannerUrl?: string;
   activeFont?: 'sans' | 'serif' | 'corporate' | 'minimalist' | 'luxury';
+  baseFontSize?: 'sm' | 'base' | 'lg' | 'xl';
 }
 
 export interface Admin {
