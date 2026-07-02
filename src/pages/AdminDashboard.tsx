@@ -3151,155 +3151,155 @@ export default function AdminDashboard({
               </div>
             )}
 
+            {/* ======================================================== */}
+            {/* 2I. TAB: FEEDBACK MANAGEMENT                             */}
+            {/* ======================================================== */}
+            {activeTab === 'feedback' && (
+              <div className="flex flex-col gap-6">
+
+                {/* Stats row */}
+                <div className="grid grid-cols-3 gap-4">
+                  {[
+                    { label: 'Pending Review', count: feedbacks.filter(f => f.status === 'pending').length, color: 'text-amber-500', bg: 'bg-amber-50 dark:bg-amber-950/20', border: 'border-amber-200 dark:border-amber-800/30' },
+                    { label: 'Approved', count: feedbacks.filter(f => f.status === 'approved').length, color: 'text-emerald-600', bg: 'bg-emerald-50 dark:bg-emerald-950/20', border: 'border-emerald-200 dark:border-emerald-800/30' },
+                    { label: 'Rejected', count: feedbacks.filter(f => f.status === 'rejected').length, color: 'text-rose-500', bg: 'bg-rose-50 dark:bg-rose-950/20', border: 'border-rose-200 dark:border-rose-800/30' },
+                  ].map((s, i) => (
+                    <div key={i} className={`flex flex-col gap-1.5 p-4 rounded-2xl border ${s.bg} ${s.border}`}>
+                      <span className={`text-2xl font-extrabold ${s.color}`}>{s.count}</span>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{s.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {feedbacks.length === 0 ? (
+                  <div className="py-20 text-center">
+                    <Star className="h-10 w-10 text-slate-200 dark:text-slate-700 mx-auto mb-3" />
+                    <p className="text-sm text-slate-400">No feedback submissions yet.</p>
+                    <p className="text-xs text-slate-400 mt-1">Share <strong className="text-indigo-500">#feedback</strong> link with clients to collect reviews.</p>
+                  </div>
+                ) : (
+                  <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-900 rounded-3xl overflow-hidden shadow-sm">
+                    <table className="w-full text-left border-collapse text-xs">
+                      <thead>
+                        <tr className="border-b border-slate-100 dark:border-slate-850 bg-slate-50 dark:bg-slate-900/40 text-slate-400 uppercase font-mono font-bold">
+                          <th className="p-4">Client</th>
+                          <th className="p-4 hidden sm:table-cell">Rating</th>
+                          <th className="p-4 hidden md:table-cell">Project</th>
+                          <th className="p-4">Status</th>
+                          <th className="p-4">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {feedbacks.sort((a,b) => {
+                          const order = { pending: 0, approved: 1, rejected: 2 };
+                          return (order[a.status] ?? 3) - (order[b.status] ?? 3);
+                        }).map((fb) => {
+                          const fbId = fb.id || fb.name;
+                          return (
+                            <tr key={fbId} className="border-b border-slate-100 dark:border-slate-850/60 last:border-0 hover:bg-slate-50/50 dark:hover:bg-slate-850/10">
+                              <td className="p-4">
+                                <div className="flex flex-col gap-0.5">
+                                  <span className="font-bold text-slate-900 dark:text-white">{fb.name}</span>
+                                  <span className="text-[10px] text-slate-400">{fb.role} · {fb.company}</span>
+                                </div>
+                              </td>
+                              <td className="p-4 hidden sm:table-cell">
+                                <div className="flex items-center gap-0.5">
+                                  {[1,2,3,4,5].map(s => (
+                                    <Star key={s} className={`h-3.5 w-3.5 ${s <= fb.rating ? 'fill-amber-400 text-amber-400' : 'text-slate-200 dark:text-slate-700'}`} />
+                                  ))}
+                                </div>
+                              </td>
+                              <td className="p-4 hidden md:table-cell">
+                                <span className="px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold">
+                                  {fb.projectType}
+                                </span>
+                              </td>
+                              <td className="p-4">
+                                <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${
+                                  fb.status === 'approved' ? 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400' :
+                                  fb.status === 'rejected' ? 'bg-rose-50 dark:bg-rose-950/30 text-rose-500' :
+                                  'bg-amber-50 dark:bg-amber-950/30 text-amber-600'
+                                }`}>{fb.status}</span>
+                              </td>
+                              <td className="p-4">
+                                <div className="flex items-center gap-2">
+                                  {fb.status !== 'approved' && (
+                                    <button
+                                      onClick={async () => {
+                                        if (!fbId || fbId.toString().startsWith('local-')) return;
+                                        try {
+                                          const { doc: firestoreDoc, updateDoc } = await import('firebase/firestore');
+                                          await updateDoc(firestoreDoc(db, 'feedback', fbId.toString()), { status: 'approved' });
+                                          addToast('success', `Feedback from ${fb.name} approved and published.`);
+                                          await refreshAllData();
+                                        } catch(e) { addToast('error', 'Failed to approve feedback.'); }
+                                      }}
+                                      title="Approve"
+                                      className="p-2 text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-950/20 cursor-pointer transition-colors"
+                                    >
+                                      <Check className="h-4 w-4" />
+                                    </button>
+                                  )}
+                                  {fb.status !== 'rejected' && (
+                                    <button
+                                      onClick={async () => {
+                                        if (!fbId || fbId.toString().startsWith('local-')) return;
+                                        try {
+                                          const { doc: firestoreDoc, updateDoc } = await import('firebase/firestore');
+                                          await updateDoc(firestoreDoc(db, 'feedback', fbId.toString()), { status: 'rejected' });
+                                          addToast('info', `Feedback from ${fb.name} rejected.`);
+                                          await refreshAllData();
+                                        } catch(e) { addToast('error', 'Failed to reject feedback.'); }
+                                      }}
+                                      title="Reject"
+                                      className="p-2 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/20 cursor-pointer transition-colors"
+                                    >
+                                      <X className="h-4 w-4" />
+                                    </button>
+                                  )}
+                                  <button
+                                    onClick={() => setDeleteTarget({ type: 'feedback', id: fbId.toString(), title: `${fb.name}'s feedback` })}
+                                    title="Delete"
+                                    className="p-2 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/20 cursor-pointer transition-colors"
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                {/* Message preview panel */}
+                {feedbacks.filter(f => f.status === 'pending').length > 0 && (
+                  <div className="flex flex-col gap-3">
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400">Pending — Full Messages</h4>
+                    {feedbacks.filter(f => f.status === 'pending').map((fb, i) => (
+                      <div key={i} className="p-5 rounded-2xl bg-amber-50 dark:bg-amber-950/10 border border-amber-100 dark:border-amber-900/30 flex flex-col gap-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold text-slate-800 dark:text-slate-200">{fb.name} · {fb.company}</span>
+                          <div className="flex items-center gap-0.5">
+                            {[1,2,3,4,5].map(s => <Star key={s} className={`h-3 w-3 ${s <= fb.rating ? 'fill-amber-400 text-amber-400' : 'text-slate-200'}`} />)}
+                          </div>
+                        </div>
+                        <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed italic">&ldquo;{fb.message}&rdquo;</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
           </div>
 
         </div>
 
       </div>
-
-      {/* ======================================================== */}
-      {/* TAB: FEEDBACK MANAGEMENT                                  */}
-      {/* ======================================================== */}
-      {activeTab === 'feedback' && (
-        <div className="flex flex-col gap-6">
-
-          {/* Stats row */}
-          <div className="grid grid-cols-3 gap-4">
-            {[
-              { label: 'Pending Review', count: feedbacks.filter(f => f.status === 'pending').length, color: 'text-amber-500', bg: 'bg-amber-50 dark:bg-amber-950/20', border: 'border-amber-200 dark:border-amber-800/30' },
-              { label: 'Approved', count: feedbacks.filter(f => f.status === 'approved').length, color: 'text-emerald-600', bg: 'bg-emerald-50 dark:bg-emerald-950/20', border: 'border-emerald-200 dark:border-emerald-800/30' },
-              { label: 'Rejected', count: feedbacks.filter(f => f.status === 'rejected').length, color: 'text-rose-500', bg: 'bg-rose-50 dark:bg-rose-950/20', border: 'border-rose-200 dark:border-rose-800/30' },
-            ].map((s, i) => (
-              <div key={i} className={`flex flex-col gap-1.5 p-4 rounded-2xl border ${s.bg} ${s.border}`}>
-                <span className={`text-2xl font-extrabold ${s.color}`}>{s.count}</span>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{s.label}</span>
-              </div>
-            ))}
-          </div>
-
-          {feedbacks.length === 0 ? (
-            <div className="py-20 text-center">
-              <Star className="h-10 w-10 text-slate-200 dark:text-slate-700 mx-auto mb-3" />
-              <p className="text-sm text-slate-400">No feedback submissions yet.</p>
-              <p className="text-xs text-slate-400 mt-1">Share <strong className="text-indigo-500">#feedback</strong> link with clients to collect reviews.</p>
-            </div>
-          ) : (
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-900 rounded-3xl overflow-hidden shadow-sm">
-              <table className="w-full text-left border-collapse text-xs">
-                <thead>
-                  <tr className="border-b border-slate-100 dark:border-slate-850 bg-slate-50 dark:bg-slate-900/40 text-slate-400 uppercase font-mono font-bold">
-                    <th className="p-4">Client</th>
-                    <th className="p-4 hidden sm:table-cell">Rating</th>
-                    <th className="p-4 hidden md:table-cell">Project</th>
-                    <th className="p-4">Status</th>
-                    <th className="p-4">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {feedbacks.sort((a,b) => {
-                    const order = { pending: 0, approved: 1, rejected: 2 };
-                    return (order[a.status] ?? 3) - (order[b.status] ?? 3);
-                  }).map((fb) => {
-                    const fbId = fb.id || fb.name;
-                    return (
-                      <tr key={fbId} className="border-b border-slate-100 dark:border-slate-850/60 last:border-0 hover:bg-slate-50/50 dark:hover:bg-slate-850/10">
-                        <td className="p-4">
-                          <div className="flex flex-col gap-0.5">
-                            <span className="font-bold text-slate-900 dark:text-white">{fb.name}</span>
-                            <span className="text-[10px] text-slate-400">{fb.role} · {fb.company}</span>
-                          </div>
-                        </td>
-                        <td className="p-4 hidden sm:table-cell">
-                          <div className="flex items-center gap-0.5">
-                            {[1,2,3,4,5].map(s => (
-                              <Star key={s} className={`h-3.5 w-3.5 ${s <= fb.rating ? 'fill-amber-400 text-amber-400' : 'text-slate-200 dark:text-slate-700'}`} />
-                            ))}
-                          </div>
-                        </td>
-                        <td className="p-4 hidden md:table-cell">
-                          <span className="px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold">
-                            {fb.projectType}
-                          </span>
-                        </td>
-                        <td className="p-4">
-                          <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${
-                            fb.status === 'approved' ? 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400' :
-                            fb.status === 'rejected' ? 'bg-rose-50 dark:bg-rose-950/30 text-rose-500' :
-                            'bg-amber-50 dark:bg-amber-950/30 text-amber-600'
-                          }`}>{fb.status}</span>
-                        </td>
-                        <td className="p-4">
-                          <div className="flex items-center gap-2">
-                            {fb.status !== 'approved' && (
-                              <button
-                                onClick={async () => {
-                                  if (!fbId || fbId.toString().startsWith('local-')) return;
-                                  try {
-                                    const { doc: firestoreDoc, updateDoc } = await import('firebase/firestore');
-                                    await updateDoc(firestoreDoc(db, 'feedback', fbId.toString()), { status: 'approved' });
-                                    addToast('success', `Feedback from ${fb.name} approved and published.`);
-                                    await refreshAllData();
-                                  } catch(e) { addToast('error', 'Failed to approve feedback.'); }
-                                }}
-                                title="Approve"
-                                className="p-2 text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-950/20 cursor-pointer transition-colors"
-                              >
-                                <Check className="h-4 w-4" />
-                              </button>
-                            )}
-                            {fb.status !== 'rejected' && (
-                              <button
-                                onClick={async () => {
-                                  if (!fbId || fbId.toString().startsWith('local-')) return;
-                                  try {
-                                    const { doc: firestoreDoc, updateDoc } = await import('firebase/firestore');
-                                    await updateDoc(firestoreDoc(db, 'feedback', fbId.toString()), { status: 'rejected' });
-                                    addToast('info', `Feedback from ${fb.name} rejected.`);
-                                    await refreshAllData();
-                                  } catch(e) { addToast('error', 'Failed to reject feedback.'); }
-                                }}
-                                title="Reject"
-                                className="p-2 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/20 cursor-pointer transition-colors"
-                              >
-                                <X className="h-4 w-4" />
-                              </button>
-                            )}
-                            <button
-                              onClick={() => setDeleteTarget({ type: 'feedback', id: fbId.toString(), title: `${fb.name}'s feedback` })}
-                              title="Delete"
-                              className="p-2 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/20 cursor-pointer transition-colors"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          )}
-
-          {/* Message preview panel */}
-          {feedbacks.filter(f => f.status === 'pending').length > 0 && (
-            <div className="flex flex-col gap-3">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400">Pending — Full Messages</h4>
-              {feedbacks.filter(f => f.status === 'pending').map((fb, i) => (
-                <div key={i} className="p-5 rounded-2xl bg-amber-50 dark:bg-amber-950/10 border border-amber-100 dark:border-amber-900/30 flex flex-col gap-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-800 dark:text-slate-200">{fb.name} · {fb.company}</span>
-                    <div className="flex items-center gap-0.5">
-                      {[1,2,3,4,5].map(s => <Star key={s} className={`h-3 w-3 ${s <= fb.rating ? 'fill-amber-400 text-amber-400' : 'text-slate-200'}`} />)}
-                    </div>
-                  </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed italic">&ldquo;{fb.message}&rdquo;</p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
 
       {/* Delete Confirmation Modal Overlay */}
       {deleteTarget && (
