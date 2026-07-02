@@ -10,7 +10,8 @@ import {
   Faq,
   JobVacancy,
   ContactMessage,
-  WebsiteSettings
+  WebsiteSettings,
+  FeedbackEntry
 } from './types';
 import {
   INITIAL_SERVICES,
@@ -37,6 +38,7 @@ import FAQ from './pages/Faq';
 import Careers from './pages/Careers';
 import Contact from './pages/Contact';
 import AdminDashboard from './pages/AdminDashboard';
+import Feedback from './pages/Feedback';
 
 // Lucide icon helper
 import { Shield, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
@@ -91,6 +93,7 @@ function AppContent() {
   const [faqs, setFaqs] = useState<Faq[]>([]);
   const [careers, setCareers] = useState<JobVacancy[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
+  const [feedbacks, setFeedbacks] = useState<FeedbackEntry[]>([]);
   // ── Pre-load settings from localStorage so the hero bg is correct on first paint
   // ── This eliminates the black-flash before Firestore responds
   const [settings, setSettings] = useState<WebsiteSettings>(() => {
@@ -366,7 +369,19 @@ function AppContent() {
         localStorage.setItem('local_contactMessages', JSON.stringify(mergedMessages));
       }
 
-      // 8. GLOBAL WEBSITE SETTINGS
+      // 8. FEEDBACK SUBMISSIONS
+      let feedbackList: FeedbackEntry[] = [];
+      try {
+        const feedbackSnap = await getDocs(collection(db, 'feedback'));
+        if (!feedbackSnap.empty) {
+          feedbackList = feedbackSnap.docs.map(d => ({ id: d.id, ...d.data() })) as FeedbackEntry[];
+        }
+      } catch (e) {
+        console.warn('Could not fetch feedback:', e);
+      }
+      setFeedbacks(feedbackList);
+
+      // 9. GLOBAL WEBSITE SETTINGS
       let loadedSettings: WebsiteSettings | null = null;
       try {
         const settingsDocRef = doc(db, 'settings', 'nexus_core');
@@ -586,6 +601,15 @@ function AppContent() {
       case '#contact':
         return <Contact services={services} settings={settings} addToast={addToast} />;
       
+      case '#feedback':
+        return (
+          <Feedback
+            feedbacks={feedbacks}
+            settings={settings}
+            addToast={addToast}
+          />
+        );
+
       case '#admin':
         if (authLoading) {
           return (
@@ -702,6 +726,7 @@ function AppContent() {
             faqs={faqs}
             careers={careers}
             messages={messages}
+            feedbacks={feedbacks}
             settings={settings}
             addToast={addToast}
             refreshAllData={loadDatabaseState}

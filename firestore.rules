@@ -30,5 +30,13 @@ service cloud.firestore {
     match /admins/{id} {
       allow read, write: if true;
     }
+
+    // Feedback collection:
+    // - Anyone can submit (create) feedback
+    // - Anyone can read (public showcase, filtering done client-side by status)
+    // - Admins can update status (approve/reject) and delete
+    match /feedback/{id} {
+      allow read, write: if true;
+    }
   }
 }

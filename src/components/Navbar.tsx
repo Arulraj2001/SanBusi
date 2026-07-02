@@ -20,6 +20,7 @@ export default function Navbar({ currentView, setCurrentView, isDark, toggleThem
     { label: 'Services', value: 'services' },
     { label: 'Portfolio', value: 'portfolio' },
     { label: 'Blog', value: 'blog' },
+    { label: 'Feedback', value: 'feedback' },
     { label: 'Careers', value: 'careers' },
     { label: 'FAQ', value: 'faq' },
     { label: 'Contact', value: 'contact' },

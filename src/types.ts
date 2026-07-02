@@ -81,6 +81,18 @@ export interface ContactMessage {
   createdAt: any;
 }
 
+export interface FeedbackEntry {
+  id?: string;
+  name: string;          // Client full name
+  company: string;       // Client company
+  role: string;          // e.g. "CTO", "Product Manager"
+  rating: number;        // 1–5 stars
+  projectType: string;   // e.g. "Web App", "Mobile App"
+  message: string;       // The feedback/review text
+  status: 'pending' | 'approved' | 'rejected';
+  createdAt: any;
+}
+
 export interface WebsiteSettings {
   companyName: string;
   logoUrl: string;
@@ -105,6 +117,7 @@ export interface WebsiteSettings {
   homeVideoUrl?: string;
   homeImageUrl?: string;
   homeVideoOpacity?: number; // 0–1, controls hero background media transparency
+  feedbackBannerUrl?: string;
   servicesBannerUrl?: string;
   portfolioBannerUrl?: string;
   blogBannerUrl?: string;
